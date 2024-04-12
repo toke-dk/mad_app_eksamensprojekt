@@ -2,14 +2,14 @@ class Ingredient {
   String name;
   double priceInDKK;
   QuantityType quantityType;
-  double? weightInKg;
+  double? weightInGram;
 
   Ingredient(
       {required this.name,
       required this.priceInDKK,
       required this.quantityType,
-      this.weightInKg}) {
-    if (quantityType == QuantityType.prKg && weightInKg == null) {
+      this.weightInGram}) {
+    if (quantityType == QuantityType.prGram && weightInGram == null) {
       throw ArgumentError('Vægt skal angives for madvarer pr. kg.');
     }
   }
@@ -18,17 +18,17 @@ class Ingredient {
     switch (quantityType) {
       case QuantityType.prPiece:
         return 'pr. styk';
-      case QuantityType.prKg:
-        return '$weightInKg kg';
+      case QuantityType.prGram:
+        return '$weightInGram kg';
       case QuantityType.bunch:
         return 'pr. bdt';
     }
   }
 
   double? get getKgPrice {
-    if (weightInKg == null) return null;
-    return priceInDKK / weightInKg!;
+    if (weightInGram == null) return null;
+    return priceInDKK / weightInGram!;
   }
 }
 
-enum QuantityType { prKg, prPiece, bunch }
+enum QuantityType { prGram, prPiece, bunch }
