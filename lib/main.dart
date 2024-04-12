@@ -1,6 +1,8 @@
+import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:mad_app_eksamensprojekt/all_ingredients.dart';
 
+import 'env/env.dart';
 import 'models/ingredient.dart';
 
 void main() {
@@ -51,9 +53,30 @@ class MyHomePage extends StatelessWidget {
                   subtitle: Text(
                       "${currentIngredient.getQuantityString} ${currentIngredient.getKgPrice ?? ''}"),
                 );
-              })
+              }),
+          OutlinedButton(onPressed: (){_apiExample();}, child: Text("Server"))
         ],
       ),
     );
   }
+}
+
+Future<void> _apiExample() async {
+  print("here");
+  OpenAI.apiKey = Env.apiKey;
+  OpenAICompletionModel completion = await OpenAI.instance.completion.create(
+    model: "gpt-3.5-turbo-instruct",
+    prompt: "Dart is a program",
+    maxTokens: 20,
+    temperature: 0.5,
+    n: 1,
+    stop: ["\n"],
+    echo: true,
+    seed: 42,
+    bestOf: 2,
+  );
+
+  print(completion.choices.first.text); // ...
+  print(completion.systemFingerprint); // ...
+  print(completion.id); // ...
 }
