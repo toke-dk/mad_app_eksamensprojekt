@@ -93,13 +93,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: const Text("Skab ret")),
             OutlinedButton(
                 onPressed: () {
+                  // print(content!.choices.first.message.toString().substring(900,content!.choices.first.message.toString().length));
                   Recipe recipeFromAi = Recipe.fromMap(jsonDecode(
                       content!.choices.first.message.content!.first.text!));
                   print(recipeFromAi);
                   Provider.of<RecipesProvider>(context, listen: false)
                       .addRecipe = recipeFromAi;
 
-                  print(recipeFromAi.ingredientsToBuy.map((e) => e.name));
+                  print(recipeFromAi.ingredientsForRecipe);
                 },
                 child: Text("debug print"))
           ],
@@ -115,19 +116,22 @@ Future<OpenAIChatCompletionModel> _apiExample() async {
   final systemMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "retuner hvilken givet besked som JSON.",
-      ),
-      OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        ''' formatet er således
+        ''' retuner hvilken givet besked som dette JSON-format:
           {
             "name": TEXT,
             "description": TEXT,
             "durationInMins": INTEGER,
-            "ingredientsForRecipe": List<TEXT>, (som er ud fra de ingredienser der bliver givet, angiv også hvor meget der skal bruges)
+            "ingredientsForRecipe": List<TEXT>,
             "instructions": List<TEXT>,
-            "ingredientsToBuy": List<{"name": TEXT, "quantity": DOUBLE, "unit": STRING, "price": DOUBLE,}> (som er de ingredienser der bliver brugt uden salt og peber)
+            "ingredientsToBuy": List<{"name": TEXT, "quantity": DOUBLE, "unit": STRING, "price": DOUBLE,}>
           }
         ''',
+      ),
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+        "Hvor 'ingredientsForRecipe' beskriver hvor meget af en ingrediens der bliver brugt i opskriften",
+      ),
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+        "Hvor 'ingredientsToBuy' er de ingredienser der bliver brugt i opsrkiften (grøntsager, kød, dåser osv.) bare formateret på denne måde",
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "opskriften skal være på dansk",
@@ -159,7 +163,7 @@ Future<OpenAIChatCompletionModel> _apiExample() async {
     seed: 6,
     messages: requestMessages,
     temperature: 0.2,
-    maxTokens: 500,
+    maxTokens: 700,
   );
 
   return chatCompletion;
