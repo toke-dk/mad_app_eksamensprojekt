@@ -11,7 +11,7 @@ class Recipe {
   Recipe(
       {required this.name,
       required this.description,
-        required this.durationInMins,
+      required this.durationInMins,
       required this.ingredientsForRecipe,
       required this.instructions,
       required this.ingredientsToBuy});
@@ -24,7 +24,8 @@ class Recipe {
       'durationInMins': durationInMins,
       'ingredientsForRecipe': ingredientsForRecipe,
       'instructions': instructions,
-      'ingredientsToBuy': ingredientsToBuy.map((ingredient) => ingredient.toMap()).toList(),
+      'ingredientsToBuy':
+          ingredientsToBuy.map((ingredient) => ingredient.toMap()).toList(),
     };
   }
 
@@ -37,8 +38,9 @@ class Recipe {
       ingredientsForRecipe: map['ingredientsForRecipe']?.cast<String>() ?? [],
       instructions: map['instructions']?.cast<String>() ?? [],
       ingredientsToBuy: (map['ingredientsToBuy'] as List<dynamic>?)
-          ?.map((ingredientMap) => Ingredient.fromMap(ingredientMap as Map<String, dynamic>))
-          .toList() ??
+              ?.map((ingredientMap) =>
+                  Ingredient.fromMap(ingredientMap as Map<String, dynamic>))
+              .toList() ??
           [],
     );
   }

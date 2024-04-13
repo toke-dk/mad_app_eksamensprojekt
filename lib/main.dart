@@ -80,8 +80,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 }),
             OutlinedButton(
                 onPressed: () {
-                  Provider.of<RecipesProvider>(context, listen: false).addRecipe = Recipe.fromMap(recipeExamples.first);
-                }, child: Text("Add exampleIngredient")),
+                  Provider.of<RecipesProvider>(context, listen: false)
+                      .addRecipe = Recipe.fromMap(recipeExamples.first);
+                },
+                child: Text("Add exampleIngredient")),
             OutlinedButton(
                 onPressed: () async {
                   final response = await _apiExample();
