@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:mad_app_eksamensprojekt/all_ingredients.dart';
@@ -26,22 +28,32 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({super.key, required this.title});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   final List<Ingredient> ingredients = kSampleIngredients;
+
+  OpenAIChatCompletionModel? content;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Column(
         children: [
+          content == null
+              ? SizedBox.shrink()
+              : Text(jsonDecode(content!.choices.first.message.content!.first.text!).toString()),
           ListView.builder(
               shrinkWrap: true,
               itemCount: ingredients.length,
@@ -54,29 +66,61 @@ class MyHomePage extends StatelessWidget {
                       "${currentIngredient.getQuantityString} ${currentIngredient.getKgPrice ?? ''}"),
                 );
               }),
-          OutlinedButton(onPressed: (){_apiExample();}, child: Text("Server"))
+          OutlinedButton(
+              onPressed: () async {
+                final response = await _apiExample();
+                setState(() {
+                  content = response;
+                });
+              },
+              child: Text("Server"))
         ],
       ),
     );
   }
 }
 
-Future<void> _apiExample() async {
-  print("here");
+Future<OpenAIChatCompletionModel> _apiExample() async {
   OpenAI.apiKey = Env.apiKey;
-  OpenAICompletionModel completion = await OpenAI.instance.completion.create(
-    model: "gpt-3.5-turbo-instruct",
-    prompt: "Dart is a program",
-    maxTokens: 20,
-    temperature: 0.5,
-    n: 1,
-    stop: ["\n"],
-    echo: true,
-    seed: 42,
-    bestOf: 2,
+  // the system message that will be sent to the request.
+  final systemMessage = OpenAIChatCompletionChoiceMessageModel(
+    content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+        "return any message you are given as JSON.",
+      ),
+    ],
+    role: OpenAIChatMessageRole.assistant,
   );
 
-  print(completion.choices.first.text); // ...
-  print(completion.systemFingerprint); // ...
-  print(completion.id); // ...
+  // the user message that will be sent to the request.
+  final userMessage = OpenAIChatCompletionChoiceMessageModel(
+    content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+        "make a dog class",
+      ),
+    ],
+    role: OpenAIChatMessageRole.user,
+  );
+
+// all messages to be sent.
+  final requestMessages = [
+    systemMessage,
+    userMessage,
+  ];
+
+// the actual request.
+  OpenAIChatCompletionModel chatCompletion = await OpenAI.instance.chat.create(
+    model: "gpt-3.5-turbo-1106",
+    responseFormat: {"type": "json_object"},
+    seed: 6,
+    messages: requestMessages,
+    temperature: 0.2,
+    maxTokens: 500,
+  );
+
+  print(chatCompletion.choices.first.message.content); // ...
+  print(chatCompletion.systemFingerprint); // ...
+  print(chatCompletion.usage.promptTokens); // ...
+  print(chatCompletion.id);
+  return chatCompletion;
 }
