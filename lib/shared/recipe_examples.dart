@@ -95,5 +95,53 @@ final List<Map<String, dynamic>> recipeExamples = [
         "price": 3.95,
       }
     ]
+  },
+  {
+    "name": "Kartoffel- og Oksekødscasserole",
+    "description": "En hjertelig og lækker casserole med lag af skivede kartofler og krydret oksekød, toppet med en velsmagende pastasauce.",
+    "durationInMins": 75,
+    "ingredientsForRecipe": [
+      "1,5 kg Kartofler, skrællede og skiver",
+      "0,5 kg Oksekød i hakket form",
+      "1 løg, hakket",
+      "400 g Færdiglavet Pastasauce",
+      "Salt og peber efter smag"
+    ],
+    "instructions": [
+      "1. Forvarm ovnen til 180°C (350°F).",
+      "2. Smør et ovnfast fad og læg skivede kartofler i bunden.",
+      "3. Steg oksekød og hakket løg på en pande, indtil kødet er brunet og løgene er gennemsigtige.",
+      "4. Fordel oksekødsblandingen over kartoflerne.",
+      "5. Hæld pastasauce jævnt over oksekødsblandingen.",
+      "6. Dæk fadet med folie og bag i 45 minutter.",
+      "7. Fjern folien og bag i yderligere 15 minutter, eller indtil kartoflerne er møre.",
+      "8. Server varm som en hjertelig hovedret."
+    ],
+    "ingredientsToBuy": [
+      {
+        "name": "Kartofler",
+        "quantity": 1.5,
+        "unit": "kg",
+        "price": 5.95
+      },
+      {
+        "name": "Oksekød i hakket form",
+        "quantity": 0.5,
+        "unit": "kg",
+        "price": 39.00
+      },
+      {
+        "name": "Løg",
+        "quantity": 1.0,
+        "unit": "stk",
+        "price": 8.95
+      },
+      {
+        "name": "Færdiglavet Pastasauce",
+        "quantity": 400,
+        "unit": "g",
+        "price": 14.95
+      }
+    ]
   }
 ];

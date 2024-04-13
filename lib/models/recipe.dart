@@ -51,11 +51,11 @@ class Recipe {
 const _jsonFormatComment = '''
 This is how the format for the recipe should be
 {
-"recipe_name": str
+"name": str
 "description": str
-"duration_in_mins": int
-"ingredients_for_recipe": List<str>
+"durationInMins": int
+"ingredientsForRecipe": List<str>
 "instructions": List<str>
-"ingredients_to_buy": {"name": str, "quantity": double, "unit": str, "price": double, "category": str}
+"ingredientsToBuy": {"name": str, "quantity": double, "unit": str, "price": double,}
 }
 ''';

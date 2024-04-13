@@ -75,8 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   final Recipe currentRecipe = recipes[index];
                   return ListTile(
                     title: Text(currentRecipe.name),
-                    trailing: Text("${currentRecipe.getTotalPrice} .-"),
-                    subtitle: Text(currentRecipe.description),
+                    trailing: Text("${currentRecipe.getTotalPrice.roundToDouble()} .-"),
+                    subtitle: Text("${currentRecipe.durationInMins} minutter, ${currentRecipe.ingredientsToBuy.length} ingredienser"),
                   );
                 }),
             OutlinedButton(

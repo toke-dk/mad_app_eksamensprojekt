@@ -27,7 +27,7 @@ class Ingredient {
       name: map['name'] as String,
       quantity: double.parse(map['quantity'].toString()),
       unit: map['unit'] as String,
-      price: double.parse(map['quantity'].toString()),
+      price: double.parse(map['price'].toString()),
     );
   }
 }
