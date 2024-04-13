@@ -45,7 +45,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Ingredient> get ingredients =>
-      Provider.of<RecipesProvider>(context).getRecipes.first.ingredientsToBuy;
+      recipes.first.ingredientsToBuy;
+
+  List<Recipe> get recipes => Provider.of<RecipesProvider>(context).getRecipes;
 
   OpenAIChatCompletionModel? content;
 
@@ -68,15 +70,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: ingredients.length,
+                itemCount: recipes.length,
                 itemBuilder: (context, index) {
-                  final Ingredient currentIngredient =
-                      kSampleIngredients[index];
+                  final Recipe currentRecipe = recipes[index];
                   return ListTile(
-                    title: Text(currentIngredient.name),
-                    trailing: Text("${currentIngredient.price} .-"),
-                    subtitle: Text(
-                        "${currentIngredient.quantity} ${currentIngredient.unit}"),
+                    title: Text(currentRecipe.name),
+                    trailing: Text("${currentRecipe.instructions.length} steps"),
+                    subtitle: Text(currentRecipe.description),
                   );
                 }),
             OutlinedButton(
