@@ -61,9 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 final Ingredient currentIngredient = kSampleIngredients[index];
                 return ListTile(
                   title: Text(currentIngredient.name),
-                  trailing: Text("${currentIngredient.priceInDKK} .-"),
+                  trailing: Text("${currentIngredient.price} .-"),
                   subtitle: Text(
-                      "${currentIngredient.getQuantityString} ${currentIngredient.getKgPrice ?? ''}"),
+                      "${currentIngredient.quantity} ${currentIngredient.unit}"),
                 );
               }),
           OutlinedButton(
