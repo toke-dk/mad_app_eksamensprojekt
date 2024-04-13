@@ -1,33 +1,31 @@
 final List<Map<String, dynamic>> recipeExamples = [
   {
-    "name": "Chicken and Vegetable Stir-Fry",
-    "description":
-        "A delicious and nutritious stir-fry loaded with tender chicken and colorful vegetables, seasoned with savory sauces.",
-    "durationInMins": 30,
+    "name": "Vegetable and Chicken Pasta",
+    "description": "A hearty pasta dish filled with colorful vegetables and tender chicken, tossed in a flavorful sauce.",
+    "durationInMins": 40,
     "ingredientsForRecipe": [
       "Kyllingebrystfileter (500g)",
       "Broccolibuketter (400g)",
       "Blomkålsbuketter (400g)",
-      "Rød peberfrugt (1)",
-      "Gul peberfrugt (1)",
-      "Orange peberfrugt (1)",
-      "Gulerødder (1 kop skiver)",
+      "Gulerødder i skiver (1 kg)",
+      "Spinatblade (400g)",
+      "Peberfrugter i forskellige farver (500g)",
+      "Tomater (1 kg)",
       "Løg (1 stk)",
-      "Hvidløgsfed (4 stk)",
-      "Vegetabilsk olie (2 spiseskefulde)",
-      "Soya sauce (1/4 kop)",
-      "Østers sauce (2 spiseskefulde, valgfrit)",
-      "Majsstivelse (2 spiseskefulde)"
+      "Kartofler (1.5 kg)",
+      "Færdiglavet pastasauce (400g)",
+      "Pasta (500g)"
     ],
     "instructions": [
-      "Prepare the chicken by cutting it into thin strips and seasoning with salt and pepper.",
-      "Heat vegetable oil in a large skillet or wok over medium-high heat. Add the chicken strips and cook until browned and cooked through. Remove chicken and set aside.",
-      "In the same skillet, add more oil if needed. Add minced garlic and sliced onion, cook until softened.",
-      "Add broccoli, cauliflower, bell peppers, and carrots. Stir-fry until vegetables are tender-crisp.",
-      "Return cooked chicken to the skillet with the vegetables.",
-      "Mix soy sauce and oyster sauce (if using), pour over chicken and vegetables.",
-      "Stir in cornstarch mixture and cook until sauce thickens.",
-      "Serve hot over cooked rice or noodles."
+      "Bring a large pot of salted water to a boil. Cook pasta according to package instructions until al dente. Drain and set aside.",
+      "Meanwhile, prepare the chicken by cutting it into bite-sized pieces and seasoning with salt and pepper.",
+      "In a large skillet, heat olive oil over medium heat. Add chicken pieces and cook until browned and cooked through. Remove from skillet and set aside.",
+      "In the same skillet, add more olive oil if needed. Add minced garlic and sliced onion, cook until softened.",
+      "Add broccoli, cauliflower, carrots, and bell peppers. Sauté until vegetables are tender.",
+      "Stir in spinach and chopped tomatoes. Cook until spinach is wilted and tomatoes are softened.",
+      "Return cooked chicken to the skillet. Pour in the pasta sauce and stir until everything is heated through.",
+      "Add cooked pasta to the skillet and toss until well coated with the sauce and ingredients.",
+      "Serve hot, garnished with grated Parmesan cheese if desired."
     ],
     "ingredientsToBuy": [
       {
@@ -45,6 +43,20 @@ final List<Map<String, dynamic>> recipeExamples = [
         "category": "Grøntsager"
       },
       {
+        "name": "Gulerødder i skiver",
+        "quantity": 1.0,
+        "unit": "kg",
+        "price": 14.39,
+        "category": "Grøntsager"
+      },
+      {
+        "name": "Spinatblade",
+        "quantity": 0.4,
+        "unit": "kg",
+        "price": 13.95,
+        "category": "Grøntsager"
+      },
+      {
         "name": "Peberfrugter i forskellige farver",
         "quantity": 0.5,
         "unit": "kg",
@@ -52,10 +64,10 @@ final List<Map<String, dynamic>> recipeExamples = [
         "category": "Grøntsager"
       },
       {
-        "name": "Gulerødder i skiver",
+        "name": "Tomater",
         "quantity": 1.0,
         "unit": "kg",
-        "price": 14.39,
+        "price": 12.95,
         "category": "Grøntsager"
       },
       {
@@ -66,6 +78,13 @@ final List<Map<String, dynamic>> recipeExamples = [
         "category": "Grøntsager"
       },
       {
+        "name": "Kartofler",
+        "quantity": 1.5,
+        "unit": "kg",
+        "price": 5.95,
+        "category": "Grøntsager"
+      },
+      {
         "name": "Kyllingebrystfilet",
         "quantity": 0.5,
         "unit": "kg",
@@ -73,31 +92,17 @@ final List<Map<String, dynamic>> recipeExamples = [
         "category": "Kød & Fjerkræ"
       },
       {
-        "name": "Soy sauce",
-        "quantity": 0.25,
-        "unit": "l",
-        "price": 22.0,
-        "category": "Kolonial"
-      },
-      {
-        "name": "Vegetable oil",
-        "quantity": 1.0,
-        "unit": "l",
-        "price": 14.0,
-        "category": "Kolonial"
-      },
-      {
-        "name": "Cornstarch",
-        "quantity": 500,
+        "name": "Færdiglavet pastasauce",
+        "quantity": 400,
         "unit": "g",
-        "price": 10.0,
+        "price": 14.95,
         "category": "Kolonial"
       },
       {
-        "name": "Oyster sauce",
-        "quantity": 250,
-        "unit": "ml",
-        "price": 15.0,
+        "name": "Pasta",
+        "quantity": 0.5,
+        "unit": "kg",
+        "price": 3.95,
         "category": "Kolonial"
       }
     ]
