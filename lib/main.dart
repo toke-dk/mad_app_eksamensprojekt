@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:mad_app_eksamensprojekt/models/recipe.dart';
+import 'package:mad_app_eksamensprojekt/pages/recipe_page.dart';
 import 'package:mad_app_eksamensprojekt/providers/recipes_provider.dart';
 import 'package:mad_app_eksamensprojekt/shared/all_ingredients.dart';
 import 'package:mad_app_eksamensprojekt/shared/recipe_examples.dart';
@@ -66,13 +67,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 shrinkWrap: true,
                 itemCount: recipes.length,
                 itemBuilder: (context, index) {
-                  final Recipe currentRecipe = recipes[index];
+                  final Recipe indexRecipe = recipes[index];
                   return ListTile(
-                    title: Text(currentRecipe.name),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RecipePage(recipe: indexRecipe))),
+                    title: Text(indexRecipe.name),
                     trailing: Text(
-                        "${currentRecipe.getTotalPrice.roundToDouble()} .-"),
+                        "${indexRecipe.getTotalPrice.roundToDouble()} .-"),
                     subtitle: Text(
-                        "${currentRecipe.durationInMins} minutter, ${currentRecipe.ingredientsToBuy.length} ingredienser"),
+                        "${indexRecipe.durationInMins} minutter, ${indexRecipe.ingredientsToBuy.length} ingredienser"),
                   );
                 }),
             OutlinedButton(
