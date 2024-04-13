@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mad_app_eksamensprojekt/models/recipe.dart';
 import 'package:mad_app_eksamensprojekt/shared/all_ingredients.dart';
 import 'package:mad_app_eksamensprojekt/shared/recipe_examples.dart';
+import 'package:provider/provider.dart';
 
 import 'env/env.dart';
 import 'models/ingredient.dart';
@@ -25,7 +26,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(title: 'Teknologi Årsprojekt'),
+      home: ChangeNotifierProvider(
+          create: (context) => RecipesProvider(),
+          child: const MyHomePage(title: 'Teknologi Årsprojekt')),
     );
   }
 }
@@ -40,13 +43,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Ingredient> ingredients = Recipe.fromMap(recipeExamples.first).ingredientsToBuy;
+  List<Ingredient> get ingredients =>
+      Provider.of<RecipesProvider>(context).getRecipes.first.ingredientsToBuy;
 
   OpenAIChatCompletionModel? content;
 
   @override
   Widget build(BuildContext context) {
-    print(Recipe.fromMap(recipeExamples.first).ingredientsForRecipe);
+    print(Provider.of<RecipesProvider>(context).getRecipes.map((e) => e.name));
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -56,14 +60,17 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             content == null
-                ? SizedBox.shrink()
-                : Text(jsonDecode(content!.choices.first.message.content!.first.text!).toString()),
+                ? const SizedBox.shrink()
+                : Text(jsonDecode(
+                        content!.choices.first.message.content!.first.text!)
+                    .toString()),
             ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: ingredients.length,
                 itemBuilder: (context, index) {
-                  final Ingredient currentIngredient = kSampleIngredients[index];
+                  final Ingredient currentIngredient =
+                      kSampleIngredients[index];
                   return ListTile(
                     title: Text(currentIngredient.name),
                     trailing: Text("${currentIngredient.price} .-"),
@@ -72,13 +79,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 }),
             OutlinedButton(
+                onPressed: () {
+                  Provider.of<RecipesProvider>(context, listen: false).addRecipe = Recipe.fromMap(recipeExamples.first);
+                }, child: Text("Add exampleIngredient")),
+            OutlinedButton(
                 onPressed: () async {
                   final response = await _apiExample();
                   setState(() {
                     content = response;
                   });
                 },
-                child: Text("Server"))
+                child: const Text("Server"))
           ],
         ),
       ),
