@@ -118,14 +118,14 @@ Future<OpenAIChatCompletionModel> _apiExample() async {
         "retuner hvilken givet besked som JSON.",
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        '''
+        ''' formatet er således
           {
-            "name": str
-            "description": str
-            "durationInMins": int
-            "ingredientsForRecipe": List<str> (som er ud fra de ingredienser der bliver givet, angiv også hvor meget der skal bruges)
-            "instructions": List<str>
-            "ingredientsToBuy": {"name": str, "quantity": double, "unit": str, "price": double,} (som er de ingredienser der bliver brugt uden salt og peber)
+            "name": TEXT,
+            "description": TEXT,
+            "durationInMins": INTEGER,
+            "ingredientsForRecipe": List<TEXT>, (som er ud fra de ingredienser der bliver givet, angiv også hvor meget der skal bruges)
+            "instructions": List<TEXT>,
+            "ingredientsToBuy": List<{"name": TEXT, "quantity": DOUBLE, "unit": STRING, "price": DOUBLE,}> (som er de ingredienser der bliver brugt uden salt og peber)
           }
         ''',
       ),
