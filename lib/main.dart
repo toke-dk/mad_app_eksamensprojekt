@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
-import 'package:mad_app_eksamensprojekt/all_ingredients.dart';
+import 'package:mad_app_eksamensprojekt/models/recipe.dart';
+import 'package:mad_app_eksamensprojekt/shared/all_ingredients.dart';
+import 'package:mad_app_eksamensprojekt/shared/recipe_examples.dart';
 
 import 'env/env.dart';
 import 'models/ingredient.dart';
@@ -38,12 +40,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Ingredient> ingredients = kSampleIngredients;
+  final List<Ingredient> ingredients = Recipe.fromMap(recipeExamples.first).ingredientsToBuy;
 
   OpenAIChatCompletionModel? content;
 
   @override
   Widget build(BuildContext context) {
+    print(Recipe.fromMap(recipeExamples.first).ingredientsForRecipe);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),

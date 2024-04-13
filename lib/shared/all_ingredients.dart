@@ -1,4 +1,4 @@
-import 'models/ingredient.dart';
+import '../models/ingredient.dart';
 
 final List<Ingredient> kSampleIngredients = [
   Ingredient(
