@@ -44,8 +44,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Ingredient> get ingredients =>
-      recipes.first.ingredientsToBuy;
+  List<Ingredient> get ingredients => recipes.first.ingredientsToBuy;
 
   List<Recipe> get recipes => Provider.of<RecipesProvider>(context).getRecipes;
 
@@ -62,11 +61,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            content == null
-                ? const SizedBox.shrink()
-                : Text(jsonDecode(
-                        content!.choices.first.message.content!.first.text!)
-                    .toString()),
             ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -75,8 +69,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   final Recipe currentRecipe = recipes[index];
                   return ListTile(
                     title: Text(currentRecipe.name),
-                    trailing: Text("${currentRecipe.getTotalPrice.roundToDouble()} .-"),
-                    subtitle: Text("${currentRecipe.durationInMins} minutter, ${currentRecipe.ingredientsToBuy.length} ingredienser"),
+                    trailing: Text(
+                        "${currentRecipe.getTotalPrice.roundToDouble()} .-"),
+                    subtitle: Text(
+                        "${currentRecipe.durationInMins} minutter, ${currentRecipe.ingredientsToBuy.length} ingredienser"),
                   );
                 }),
             OutlinedButton(
@@ -92,7 +88,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     content = response;
                   });
                 },
-                child: const Text("Server"))
+                child: const Text("Server")),
+            OutlinedButton(
+                onPressed: () {
+                  print(Recipe.fromMap(jsonDecode(
+                      content!.choices.first.message.content!.first.text!)));
+                },
+                child: Text("debug print"))
           ],
         ),
       ),
@@ -106,7 +108,19 @@ Future<OpenAIChatCompletionModel> _apiExample() async {
   final systemMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "return any message you are given as JSON.",
+        "retuner hvilken givet besked som JSON.",
+      ),
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+        '''
+          {
+            "name": str
+            "description": str
+            "durationInMins": int
+            "ingredientsForRecipe": List<str>
+            "instructions": List<str>
+            "ingredientsToBuy": {"name": str, "quantity": double, "unit": str, "price": double,}
+          }
+        ''',
       ),
     ],
     role: OpenAIChatMessageRole.assistant,
@@ -116,7 +130,7 @@ Future<OpenAIChatCompletionModel> _apiExample() async {
   final userMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "make a dog class",
+        "lav en opskrift",
       ),
     ],
     role: OpenAIChatMessageRole.user,
@@ -135,12 +149,8 @@ Future<OpenAIChatCompletionModel> _apiExample() async {
     seed: 6,
     messages: requestMessages,
     temperature: 0.2,
-    maxTokens: 500,
+    maxTokens: 1000,
   );
 
-  print(chatCompletion.choices.first.message.content); // ...
-  print(chatCompletion.systemFingerprint); // ...
-  print(chatCompletion.usage.promptTokens); // ...
-  print(chatCompletion.id);
   return chatCompletion;
 }
