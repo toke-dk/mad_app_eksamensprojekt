@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text("Add exampleIngredient")),
             OutlinedButton(
                 onPressed: () async {
-                  final response = await _apiExample();
+                  final response = await _apiExample(["vegetar"]);
                   setState(() {
                     content = response;
                   });
@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Future<OpenAIChatCompletionModel> _apiExample() async {
+Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
   OpenAI.apiKey = Env.apiKey;
   // the system message that will be sent to the request.
   final systemMessage = OpenAIChatCompletionChoiceMessageModel(
@@ -159,10 +159,21 @@ Future<OpenAIChatCompletionModel> _apiExample() async {
     role: OpenAIChatMessageRole.user,
   );
 
+  // requirement
+  final requirementsMessage = OpenAIChatCompletionChoiceMessageModel(
+    content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+        "krav til retten: ${requirements.join(',')}",
+      ),
+    ],
+    role: OpenAIChatMessageRole.user,
+  );
+
 // all messages to be sent.
   final requestMessages = [
     systemMessage,
     userMessage,
+    requirementsMessage,
   ];
 
 // the actual request.
