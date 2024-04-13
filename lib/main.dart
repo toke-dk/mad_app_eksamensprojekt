@@ -87,20 +87,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   setState(() {
                     content = response;
                   });
+                  // print(content!.choices.first.message.toString().substring(900,content!.choices.first.message.toString().length));
+                  Recipe recipeFromAi = Recipe.fromMap(jsonDecode(
+                      content!.choices.first.message.content!.first.text!));
+                  Provider.of<RecipesProvider>(context, listen: false)
+                      .addRecipe = recipeFromAi;
+
                   print(jsonDecode(
                       response!.choices.first.message.content!.first.text!));
                 },
                 child: const Text("Skab ret")),
             OutlinedButton(
                 onPressed: () {
-                  // print(content!.choices.first.message.toString().substring(900,content!.choices.first.message.toString().length));
                   Recipe recipeFromAi = Recipe.fromMap(jsonDecode(
                       content!.choices.first.message.content!.first.text!));
-                  print(recipeFromAi);
-                  Provider.of<RecipesProvider>(context, listen: false)
-                      .addRecipe = recipeFromAi;
 
+                  print(recipeFromAi.ingredientsToBuy.map((e) => e.name));
                   print(recipeFromAi.ingredientsForRecipe);
+                  print(recipeFromAi.ingredientsToBuy.map((e) => e.quantity));
                 },
                 child: Text("debug print"))
           ],
@@ -131,7 +135,7 @@ Future<OpenAIChatCompletionModel> _apiExample() async {
         "Hvor 'ingredientsForRecipe' beskriver hvor meget af en ingrediens der bliver brugt i opskriften",
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "Hvor 'ingredientsToBuy' er de ingredienser der bliver brugt i opsrkiften (grøntsager, kød, dåser osv.) bare formateret på denne måde",
+        "ingredientsToBuy skal have de samme ingredienser/elemnter/madvarer som ingredientsForRecipe",
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "opskriften skal være på dansk",
