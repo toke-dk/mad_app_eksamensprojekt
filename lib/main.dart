@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:mad_app_eksamensprojekt/models/recipe.dart';
+import 'package:mad_app_eksamensprojekt/providers/recipes_provider.dart';
 import 'package:mad_app_eksamensprojekt/shared/all_ingredients.dart';
 import 'package:mad_app_eksamensprojekt/shared/recipe_examples.dart';
 import 'package:provider/provider.dart';
