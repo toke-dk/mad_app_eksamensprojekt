@@ -49,32 +49,35 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Column(
-        children: [
-          content == null
-              ? SizedBox.shrink()
-              : Text(jsonDecode(content!.choices.first.message.content!.first.text!).toString()),
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: ingredients.length,
-              itemBuilder: (context, index) {
-                final Ingredient currentIngredient = kSampleIngredients[index];
-                return ListTile(
-                  title: Text(currentIngredient.name),
-                  trailing: Text("${currentIngredient.price} .-"),
-                  subtitle: Text(
-                      "${currentIngredient.quantity} ${currentIngredient.unit}"),
-                );
-              }),
-          OutlinedButton(
-              onPressed: () async {
-                final response = await _apiExample();
-                setState(() {
-                  content = response;
-                });
-              },
-              child: Text("Server"))
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            content == null
+                ? SizedBox.shrink()
+                : Text(jsonDecode(content!.choices.first.message.content!.first.text!).toString()),
+            ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: ingredients.length,
+                itemBuilder: (context, index) {
+                  final Ingredient currentIngredient = kSampleIngredients[index];
+                  return ListTile(
+                    title: Text(currentIngredient.name),
+                    trailing: Text("${currentIngredient.price} .-"),
+                    subtitle: Text(
+                        "${currentIngredient.quantity} ${currentIngredient.unit}"),
+                  );
+                }),
+            OutlinedButton(
+                onPressed: () async {
+                  final response = await _apiExample();
+                  setState(() {
+                    content = response;
+                  });
+                },
+                child: Text("Server"))
+          ],
+        ),
       ),
     );
   }
