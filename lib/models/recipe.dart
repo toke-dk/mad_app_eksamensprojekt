@@ -44,6 +44,8 @@ class Recipe {
           [],
     );
   }
+
+  double get getTotalPrice => ingredientsToBuy.map((e) => e.price).toList().reduce((a, b) => a+b);
 }
 
 const _jsonFormatComment = '''

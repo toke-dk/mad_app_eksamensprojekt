@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   final Recipe currentRecipe = recipes[index];
                   return ListTile(
                     title: Text(currentRecipe.name),
-                    trailing: Text("${currentRecipe.instructions.length} steps"),
+                    trailing: Text("${currentRecipe.getTotalPrice} .-"),
                     subtitle: Text(currentRecipe.description),
                   );
                 }),

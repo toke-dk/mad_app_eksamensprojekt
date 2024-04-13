@@ -33,77 +33,66 @@ final List<Map<String, dynamic>> recipeExamples = [
         "quantity": 0.4,
         "unit": "kg",
         "price": 13.95,
-        "category": "Grøntsager"
       },
       {
         "name": "Blomkålsbuketter",
         "quantity": 0.4,
         "unit": "kg",
         "price": 12.95,
-        "category": "Grøntsager"
       },
       {
         "name": "Gulerødder i skiver",
         "quantity": 1.0,
         "unit": "kg",
         "price": 14.39,
-        "category": "Grøntsager"
       },
       {
         "name": "Spinatblade",
         "quantity": 0.4,
         "unit": "kg",
         "price": 13.95,
-        "category": "Grøntsager"
       },
       {
         "name": "Peberfrugter i forskellige farver",
         "quantity": 0.5,
         "unit": "kg",
         "price": 19.95,
-        "category": "Grøntsager"
       },
       {
         "name": "Tomater",
         "quantity": 1.0,
         "unit": "kg",
         "price": 12.95,
-        "category": "Grøntsager"
       },
       {
         "name": "Løg",
         "quantity": 1.0,
         "unit": "kg",
         "price": 8.95,
-        "category": "Grøntsager"
       },
       {
         "name": "Kartofler",
         "quantity": 1.5,
         "unit": "kg",
         "price": 5.95,
-        "category": "Grøntsager"
       },
       {
         "name": "Kyllingebrystfilet",
         "quantity": 0.5,
         "unit": "kg",
         "price": 39.95,
-        "category": "Kød & Fjerkræ"
       },
       {
         "name": "Færdiglavet pastasauce",
         "quantity": 400,
         "unit": "g",
         "price": 14.95,
-        "category": "Kolonial"
       },
       {
         "name": "Pasta",
         "quantity": 0.5,
         "unit": "kg",
         "price": 3.95,
-        "category": "Kolonial"
       }
     ]
   }
