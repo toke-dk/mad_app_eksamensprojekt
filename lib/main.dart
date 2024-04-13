@@ -87,12 +87,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   setState(() {
                     content = response;
                   });
+                  print(jsonDecode(
+                      response!.choices.first.message.content!.first.text!));
                 },
-                child: const Text("Server")),
+                child: const Text("Skab ret")),
             OutlinedButton(
                 onPressed: () {
-                  print(Recipe.fromMap(jsonDecode(
-                      content!.choices.first.message.content!.first.text!)));
+                  Recipe recipeFromAi = Recipe.fromMap(jsonDecode(
+                      content!.choices.first.message.content!.first.text!));
+                  print(recipeFromAi);
+                  Provider.of<RecipesProvider>(context, listen: false)
+                      .addRecipe = recipeFromAi;
+
+                  print(recipeFromAi.ingredientsToBuy.map((e) => e.name));
                 },
                 child: Text("debug print"))
           ],
@@ -116,11 +123,14 @@ Future<OpenAIChatCompletionModel> _apiExample() async {
             "name": str
             "description": str
             "durationInMins": int
-            "ingredientsForRecipe": List<str>
+            "ingredientsForRecipe": List<str> (som er ud fra de ingredienser der bliver givet, angiv også hvor meget der skal bruges)
             "instructions": List<str>
-            "ingredientsToBuy": {"name": str, "quantity": double, "unit": str, "price": double,}
+            "ingredientsToBuy": {"name": str, "quantity": double, "unit": str, "price": double,} (som er de ingredienser der bliver brugt uden salt og peber)
           }
         ''',
+      ),
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+        "opskriften skal være på dansk",
       ),
     ],
     role: OpenAIChatMessageRole.assistant,
@@ -130,7 +140,7 @@ Future<OpenAIChatCompletionModel> _apiExample() async {
   final userMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "lav en opskrift",
+        "Lav en aftensmadsret. Du må bruge nogle disse ingredienser ${kSampleIngredients.map((e) => e.toMap())} ikke andre",
       ),
     ],
     role: OpenAIChatMessageRole.user,
@@ -149,7 +159,7 @@ Future<OpenAIChatCompletionModel> _apiExample() async {
     seed: 6,
     messages: requestMessages,
     temperature: 0.2,
-    maxTokens: 1000,
+    maxTokens: 500,
   );
 
   return chatCompletion;
