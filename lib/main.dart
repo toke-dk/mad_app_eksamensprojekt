@@ -140,6 +140,9 @@ Future<OpenAIChatCompletionModel> _apiExample() async {
     role: OpenAIChatMessageRole.assistant,
   );
 
+  // shuffiling ingredients, to get better results
+  kSampleIngredients.shuffle();
+
   // the user message that will be sent to the request.
   final userMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [

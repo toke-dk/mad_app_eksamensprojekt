@@ -2,7 +2,6 @@ import '../models/ingredient.dart';
 
 final List<Ingredient> kSampleIngredients = [
   // Proteinkilder
-  Ingredient(name: "Kyllingbryst", quantity: 2, unit: "stk", price: 49.95),
   Ingredient(name: "Lakserede laks", quantity: 200, unit: "gram", price: 69.95),
   Ingredient(name: "Vegetarfars", quantity: 400, unit: "gram", price: 24.50),
   Ingredient(name: "Bønner", quantity: 400, unit: "gram", price: 12.95),
@@ -37,20 +36,35 @@ final List<Ingredient> kSampleIngredients = [
   Ingredient(name: "Peber", quantity: 50, unit: "gram", price: 5.75),
 
 // Andre ingredienser
-  Ingredient(
-      name: "Kyllingbouillon", quantity: 1, unit: "terning", price: 1.50),
   Ingredient(name: "Fløde", quantity: 200, unit: "ml", price: 9.95),
   Ingredient(name: "Smør", quantity: 100, unit: "gram", price: 7.50),
-  Ingredient(name: "Mel", quantity: 250, unit: "gram", price: 4.95),
-  Ingredient(name: "Gær", quantity: 7, unit: "gram", price: 2.50),
-  Ingredient(name: "Sukker", quantity: 100, unit: "gram", price: 3.25),
-  Ingredient(name: "Vaniljeekstrakt", quantity: 1, unit: "tsk", price: 8.50),
-  Ingredient(name: "Chokolade", quantity: 100, unit: "gram", price: 15.95),
-  Ingredient(name: "Marmelade", quantity: 250, unit: "gram", price: 9.75),
-  Ingredient(name: "Is", quantity: 1, unit: "liter", price: 24.50),
-  Ingredient(name: "Kaffe", quantity: 250, unit: "gram", price: 12.95),
-  Ingredient(name: "Te", quantity: 25, unit: "pakke", price: 14.50),
-  Ingredient(name: "Mineralvand", quantity: 6, unit: "flaske", price: 18.50),
   Ingredient(name: "Vin", quantity: 1, unit: "flaske", price: 59.95),
-  Ingredient(name: "Øl", quantity: 6, unit: "dåse", price: 24.50),
+
+  // Oksekød
+  Ingredient(name: "Hakkekød", quantity: 500, unit: "gram", price: 42.95),
+  Ingredient(name: "Oksekødsfilet", quantity: 400, unit: "gram", price: 89.95),
+  Ingredient(name: "Oksekødssteg", quantity: 1, unit: "stk", price: 129.95),
+  Ingredient(name: "Oksekødsgryde", quantity: 500, unit: "gram", price: 59.95),
+  Ingredient(name: "Oksekødstartare", quantity: 250, unit: "gram", price: 49.95),
+
+  // Svinekød
+  Ingredient(name: "Fiskefilet", quantity: 400, unit: "gram", price: 34.50),
+  Ingredient(name: "Svinekødssmørrebrød", quantity: 2, unit: "stk", price: 19.95),
+  Ingredient(name: "Bacon", quantity: 250, unit: "gram", price: 24.95),
+  Ingredient(name: "Nakkekam", quantity: 1, unit: "stk", price: 69.95),
+  Ingredient(name: "Hakket svinekød", quantity: 500, unit: "gram", price: 39.95),
+
+  // Kylling
+  Ingredient(name: "Kyllingefilet", quantity: 4, unit: "stk", price: 59.95),
+  Ingredient(name: "Hel kylling", quantity: 1, unit: "stk", price: 39.95),
+  Ingredient(name: "Kyllingelår", quantity: 4, unit: "stk", price: 44.95),
+  Ingredient(name: "Kyllingebryst", quantity: 2, unit: "stk", price: 49.95),
+  Ingredient(name: "Kyllingepålæg", quantity: 150, unit: "gram", price: 22.75),
+
+  // Lam
+  Ingredient(name: "Lammekoteletter", quantity: 4, unit: "stk", price: 89.95),
+  Ingredient(name: "Lammefrikassé", quantity: 500, unit: "gram", price: 64.95),
+  Ingredient(name: "Lammesteg", quantity: 1, unit: "stk", price: 149.95),
+  Ingredient(name: "Lammehakke", quantity: 500, unit: "gram", price: 54.95),
+  Ingredient(name: "Lammespalle", quantity: 1, unit: "stk", price: 99.95),
 ];
