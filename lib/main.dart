@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<String> get generateRestrictions {
     List<String> restrictions = [];
-    if (onlyVegitarian) restrictions.add("vegetar");
+    if (onlyVegitarian) restrictions.add("vegetarisk");
     if (onlyVegan) restrictions.add("vegansk");
     if (noLactose) restrictions.add("laktosefrit");
     if (noGluten) restrictions.add("glutenfrit");
@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 }),
             OutlinedButton(
                 onPressed: () async {
-                  final response = await _apiExample(["vegetar"]);
+                  final response = await _apiExample(generateRestrictions);
                   setState(() {
                     content = response;
                   });
@@ -196,6 +196,9 @@ Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "opskriften skal være på dansk",
       ),
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+        "krav til retten: ${requirements.join(',')}",
+      ),
     ],
     role: OpenAIChatMessageRole.assistant,
   );
@@ -213,21 +216,10 @@ Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
     role: OpenAIChatMessageRole.user,
   );
 
-  // requirement
-  final requirementsMessage = OpenAIChatCompletionChoiceMessageModel(
-    content: [
-      OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "krav til retten: ${requirements.join(',')}",
-      ),
-    ],
-    role: OpenAIChatMessageRole.user,
-  );
-
 // all messages to be sent.
   final requestMessages = [
     systemMessage,
     userMessage,
-    requirementsMessage,
   ];
 
 // the actual request.
