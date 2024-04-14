@@ -34,5 +34,4 @@ final List<Map<String, dynamic>> recipeExamples = [
       "Server straks og nyd!"
     ]
   }
-2
 ];
