@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool noLactose = false;
   bool noGluten = false;
 
-  List<String> get generateRestrictions{
+  List<String> get generateRestrictions {
     List<String> restrictions = [];
     if (onlyVegitarian) restrictions.add("vegetar");
     if (onlyVegan) restrictions.add("vegansk");
@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             CheckboxListTile(
-              title: Text("Vegetar"),
+                title: Text("Vegetar"),
                 value: onlyVegitarian,
                 onChanged: (val) {
                   if (val == null) return;
@@ -111,7 +111,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     noGluten = val;
                   });
                 }),
-
             OutlinedButton(
                 onPressed: () async {
                   final response = await _apiExample(["vegetar"]);
