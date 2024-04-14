@@ -4,17 +4,15 @@ class Recipe {
   String name;
   String description;
   int durationInMins;
-  List<String> ingredientsForRecipe;
+  List<Ingredient> ingredientsForRecipe;
   List<String> instructions;
-  List<Ingredient> ingredientsToBuy;
 
   Recipe(
       {required this.name,
       required this.description,
       required this.durationInMins,
       required this.ingredientsForRecipe,
-      required this.instructions,
-      required this.ingredientsToBuy});
+      required this.instructions,});
 
   // To map: convert each field to a compatible map structure
   Map<String, dynamic> toMap() {
@@ -22,10 +20,10 @@ class Recipe {
       'name': name,
       'description': description,
       'durationInMins': durationInMins,
-      'ingredientsForRecipe': ingredientsForRecipe,
+      'ingredientsForRecipe':
+      ingredientsForRecipe.map((ingredient) => ingredient.toMap()).toList(),
       'instructions': instructions,
-      'ingredientsToBuy':
-          ingredientsToBuy.map((ingredient) => ingredient.toMap()).toList(),
+
     };
   }
 
@@ -35,27 +33,16 @@ class Recipe {
       name: map['name'] as String,
       description: map['description'] as String,
       durationInMins: map['durationInMins'] as int,
-      ingredientsForRecipe: map['ingredientsForRecipe']?.cast<String>() ?? [],
-      instructions: map['instructions']?.cast<String>() ?? [],
-      ingredientsToBuy: (map['ingredientsToBuy'] as List<dynamic>?)
-              ?.map((ingredientMap) =>
-                  Ingredient.fromMap(ingredientMap as Map<String, dynamic>))
-              .toList() ??
+      ingredientsForRecipe: (map['ingredientsForRecipe'] as List<dynamic>?)
+          ?.map((ingredientMap) =>
+          Ingredient.fromMap(ingredientMap as Map<String, dynamic>))
+          .toList() ??
           [],
+      instructions: map['instructions']?.cast<String>() ?? [],
+
     );
   }
 
-  double get getTotalPrice => ingredientsToBuy.map((e) => e.price).toList().reduce((a, b) => a+b);
+  double get getTotalPrice => ingredientsForRecipe.map((e) => e.price).toList().reduce((a, b) => a+b);
 }
 
-const _jsonFormatComment = '''
-This is how the format for the recipe should be
-{
-"name": str
-"description": str
-"durationInMins": int
-"ingredientsForRecipe": List<str>
-"instructions": List<str>
-"ingredientsToBuy": {"name": str, "quantity": double, "unit": str, "price": double,}
-}
-''';

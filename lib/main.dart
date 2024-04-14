@@ -45,7 +45,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Ingredient> get ingredients => recipes.first.ingredientsToBuy;
+  List<Ingredient> get ingredients => recipes.first.ingredientsForRecipe;
 
   List<Recipe> get recipes => Provider.of<RecipesProvider>(context).getRecipes;
 
@@ -144,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     trailing:
                         Text("${indexRecipe.getTotalPrice.roundToDouble()} .-"),
                     subtitle: Text(
-                        "${indexRecipe.durationInMins} minutter, ${indexRecipe.ingredientsToBuy.length} ingredienser"),
+                        "${indexRecipe.durationInMins} minutter, ${indexRecipe.ingredientsForRecipe.length} ingredienser"),
                   );
                 }),
             OutlinedButton(
@@ -158,9 +158,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Recipe recipeFromAi = Recipe.fromMap(jsonDecode(
                       content!.choices.first.message.content!.first.text!));
 
-                  print(recipeFromAi.ingredientsToBuy.map((e) => e.name));
+                  print(recipeFromAi.ingredientsForRecipe.map((e) => e.name));
                   print(recipeFromAi.ingredientsForRecipe);
-                  print(recipeFromAi.ingredientsToBuy.map((e) => e.quantity));
                 },
                 child: Text("debug print"))
           ],
@@ -181,17 +180,13 @@ Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
             "name": TEXT,
             "description": TEXT,
             "durationInMins": INTEGER,
-            "ingredientsForRecipe": List<TEXT>,
+            "ingredientsForRecipe": List<{"name": TEXT, "quantity": DOUBLE, "unit": STRING, "price": DOUBLE}>,
             "instructions": List<TEXT>,
-            "ingredientsToBuy": List<{"name": TEXT, "quantity": DOUBLE, "unit": STRING, "price": DOUBLE,}>
           }
         ''',
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "Hvor 'ingredientsForRecipe' beskriver hvor meget af en ingrediens der bliver brugt i opskriften",
-      ),
-      OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "ingredientsToBuy skal have de samme ingredienser/elemnter/madvarer som ingredientsForRecipe",
+        "Hvor 'ingredientsForRecipe' beskriver hvor meget af en ingrediens der bliver brugt i opskriften. unit må kun være: g/mL/stk/tsk/spsk/fed",
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "opskriften skal være på dansk",
@@ -210,7 +205,7 @@ Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
   final userMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "Lav en aftensmadsret. Du må bruge nogle disse ingredienser ${kSampleIngredients.map((e) => e.toMap())} ikke andre",
+        "Lav en aftensmadsret til en mand på 18",
       ),
     ],
     role: OpenAIChatMessageRole.user,

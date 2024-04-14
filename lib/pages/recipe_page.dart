@@ -33,7 +33,7 @@ class RecipePage extends StatelessWidget {
               itemCount: recipe.ingredientsForRecipe.length,
               itemBuilder: (context, index) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Text("${recipe.ingredientsForRecipe[index]}"),
+                child: Text("${recipe.ingredientsForRecipe[index].quantity} ${recipe.ingredientsForRecipe[index].unit} ${recipe.ingredientsForRecipe[index].name}"),
               ),
               shrinkWrap: true,
             ),
