@@ -50,6 +50,19 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Recipe> get recipes => Provider.of<RecipesProvider>(context).getRecipes;
 
   OpenAIChatCompletionModel? content;
+  bool onlyVegitarian = false;
+  bool onlyVegan = false;
+  bool noLactose = false;
+  bool noGluten = false;
+
+  List<String> get generateRestrictions{
+    List<String> restrictions = [];
+    if (onlyVegitarian) restrictions.add("vegetar");
+    if (onlyVegan) restrictions.add("vegansk");
+    if (noLactose) restrictions.add("laktosefrit");
+    if (noGluten) restrictions.add("glutenfrit");
+    return restrictions;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,27 +75,43 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: recipes.length,
-                itemBuilder: (context, index) {
-                  final Recipe indexRecipe = recipes[index];
-                  return ListTile(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RecipePage(recipe: indexRecipe))),
-                    title: Text(indexRecipe.name),
-                    trailing: Text(
-                        "${indexRecipe.getTotalPrice.roundToDouble()} .-"),
-                    subtitle: Text(
-                        "${indexRecipe.durationInMins} minutter, ${indexRecipe.ingredientsToBuy.length} ingredienser"),
-                  );
+            CheckboxListTile(
+              title: Text("Vegetar"),
+                value: onlyVegitarian,
+                onChanged: (val) {
+                  if (val == null) return;
+                  setState(() {
+                    onlyVegitarian = val;
+                  });
                 }),
-            OutlinedButton(
-                onPressed: () {
-                  Provider.of<RecipesProvider>(context, listen: false)
-                      .addRecipe = Recipe.fromMap(recipeExamples.first);
-                },
-                child: Text("Add exampleIngredient")),
+            CheckboxListTile(
+                title: Text("Vegansk"),
+                value: onlyVegan,
+                onChanged: (val) {
+                  if (val == null) return;
+                  setState(() {
+                    onlyVegan = val;
+                  });
+                }),
+            CheckboxListTile(
+                title: Text("Laktosefri"),
+                value: noLactose,
+                onChanged: (val) {
+                  if (val == null) return;
+                  setState(() {
+                    noLactose = val;
+                  });
+                }),
+            CheckboxListTile(
+                title: Text("Glutenfri"),
+                value: noGluten,
+                onChanged: (val) {
+                  if (val == null) return;
+                  setState(() {
+                    noGluten = val;
+                  });
+                }),
+
             OutlinedButton(
                 onPressed: () async {
                   final response = await _apiExample(["vegetar"]);
@@ -99,6 +128,32 @@ class _MyHomePageState extends State<MyHomePage> {
                       response!.choices.first.message.content!.first.text!));
                 },
                 child: const Text("Skab ret")),
+            Divider(),
+            ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: recipes.length,
+                itemBuilder: (context, index) {
+                  final Recipe indexRecipe = recipes[index];
+                  return ListTile(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                RecipePage(recipe: indexRecipe))),
+                    title: Text(indexRecipe.name),
+                    trailing:
+                        Text("${indexRecipe.getTotalPrice.roundToDouble()} .-"),
+                    subtitle: Text(
+                        "${indexRecipe.durationInMins} minutter, ${indexRecipe.ingredientsToBuy.length} ingredienser"),
+                  );
+                }),
+            OutlinedButton(
+                onPressed: () {
+                  Provider.of<RecipesProvider>(context, listen: false)
+                      .addRecipe = Recipe.fromMap(recipeExamples.first);
+                },
+                child: Text("Add exampleIngredient")),
             OutlinedButton(
                 onPressed: () {
                   Recipe recipeFromAi = Recipe.fromMap(jsonDecode(
