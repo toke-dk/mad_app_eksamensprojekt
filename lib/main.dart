@@ -9,6 +9,7 @@ import 'package:mad_app_eksamensprojekt/providers/recipes_provider.dart';
 import 'package:mad_app_eksamensprojekt/shared/all_ingredients.dart';
 import 'package:mad_app_eksamensprojekt/shared/openai_extensions.dart';
 import 'package:mad_app_eksamensprojekt/shared/recipe_examples.dart';
+import 'package:mad_app_eksamensprojekt/shared/widgets/my_value_changer.dart';
 import 'package:provider/provider.dart';
 
 import 'env/env.dart';
@@ -134,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 },
                 child: Text("Foreslå retter")),
+            MyValueChanger(handleValueChange: (newVal){}, value: 1),
             OutlinedButton(
                 onPressed: () async {
                   final response = await _apiExample(generateRestrictions);
