@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:mad_app_eksamensprojekt/models/recipe.dart';
+import 'package:mad_app_eksamensprojekt/models/recipe_suggestion.dart';
 import 'package:mad_app_eksamensprojekt/pages/recipe_page.dart';
 import 'package:mad_app_eksamensprojekt/providers/recipes_provider.dart';
 import 'package:mad_app_eksamensprojekt/shared/all_ingredients.dart';
@@ -67,6 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   OpenAIChatCompletionModel? creativeDishesFromAI;
 
+  List<RecipeSuggestion> recipeSuggestions = [];
+
   @override
   Widget build(BuildContext context) {
     print(Provider.of<RecipesProvider>(context).getRecipes.map((e) => e.name));
@@ -116,9 +119,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 }),
             OutlinedButton(
                 onPressed: () async {
-                  creativeDishesFromAI =
+                  final OpenAIChatCompletionModel result =
                       await createDishSuggestions(2, generateRestrictions);
-                  print(creativeDishesFromAI!.myJsonDecode["recipes"][0]);
+
+                  final List<dynamic> recipesMap =
+                      result.myJsonDecode["recipes"];
+
+                  final List<RecipeSuggestion> suggestions = recipesMap
+                      .map((e) => RecipeSuggestion.fromMap(e))
+                      .toList();
+
+                  setState(() {
+                    recipeSuggestions.addAll(suggestions);
+                  });
                 },
                 child: Text("Foreslå retter")),
             OutlinedButton(
@@ -156,6 +169,21 @@ class _MyHomePageState extends State<MyHomePage> {
                         "${indexRecipe.durationInMins} minutter, ${indexRecipe.ingredientsForRecipe.length} ingredienser"),
                   );
                 }),
+            Divider(),
+            ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: recipeSuggestions.length,
+                itemBuilder: (context, index) {
+                  final RecipeSuggestion indexSuggestion =
+                      recipeSuggestions[index];
+                  print(indexSuggestion);
+                  return ListTile(
+                    title: Text(indexSuggestion.title),
+                    subtitle: Text(indexSuggestion.shortDescription),
+                  );
+                }),
+            Divider(),
             OutlinedButton(
                 onPressed: () {
                   Provider.of<RecipesProvider>(context, listen: false)
