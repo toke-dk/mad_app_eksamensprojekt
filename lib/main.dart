@@ -176,7 +176,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   debugPrint(response.myJsonDecode.toString());
                 },
                 child: const Text("Skab ret")),
-            !isLoadingDishes ? SizedBox.shrink() : FittedBox(child: CircularProgressIndicator()),
+            !isLoadingDishes
+                ? SizedBox.shrink()
+                : FittedBox(child: CircularProgressIndicator()),
             Divider(),
             ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
@@ -184,17 +186,29 @@ class _MyHomePageState extends State<MyHomePage> {
                 itemCount: recipes.length,
                 itemBuilder: (context, index) {
                   final Recipe indexRecipe = recipes[index];
-                  return ListTile(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                RecipePage(recipe: indexRecipe))),
-                    title: Text(indexRecipe.name),
-                    trailing:
-                        Text("${indexRecipe.getTotalPrice.roundToDouble()} .-"),
-                    subtitle: Text(
-                        "${indexRecipe.durationInMins} minutter, ${indexRecipe.ingredientsForRecipe.length} ingredienser"),
+                  return Dismissible(
+                    key: Key("item-$index"),
+                    background: Container(
+                      color: Colors.red,
+                      child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Icon(Icons.delete_forever)),
+                    ),
+                    onDismissed: (direction) =>
+                        Provider.of<RecipesProvider>(context, listen: false)
+                            .removeRecipe(indexRecipe),
+                    child: ListTile(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  RecipePage(recipe: indexRecipe))),
+                      title: Text(indexRecipe.name),
+                      trailing: Text(
+                          "${indexRecipe.getTotalPrice.roundToDouble()} .-"),
+                      subtitle: Text(
+                          "${indexRecipe.durationInMins} minutter, ${indexRecipe.ingredientsForRecipe.length} ingredienser"),
+                    ),
                   );
                 }),
             Divider(),
@@ -220,17 +234,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text("Add exampleIngredient")),
             OutlinedButton(
                 onPressed: () {
-
-
-
-
-                  String myString = content!.choices.first.message.content!.first.text.toString();
+                  String myString = content!
+                      .choices.first.message.content!.first.text
+                      .toString();
                   int startIndex = 1800;
                   int endIndex = myString.length;
 
                   String substring = myString.substring(startIndex, endIndex);
                   print(substring);
-
 
                   //print(content!.myJsonDecode);
                 },
@@ -262,7 +273,6 @@ Future<OpenAIChatCompletionModel> _apiExample(
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "unit må kun være: g/mL/stk/tsk/spsk/fed",
       ),
-
     ],
     role: OpenAIChatMessageRole.assistant,
   );

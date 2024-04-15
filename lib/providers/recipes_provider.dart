@@ -19,4 +19,9 @@ class RecipesProvider extends ChangeNotifier {
     _recipes.addAll(recipes);
     notifyListeners();
   }
+
+  void removeRecipe(Recipe recipe) {
+    _recipes.remove(recipe);
+    notifyListeners();
+  }
 }
