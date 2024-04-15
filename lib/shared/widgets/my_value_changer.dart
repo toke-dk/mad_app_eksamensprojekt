@@ -49,6 +49,7 @@ class MyValueChanger extends StatefulWidget {
 
 class _MyValueChangerState extends State<MyValueChanger> {
   void _handleGoalValueDecrement(String textValue) {
+    print("handel");
     final int? intValue = int.tryParse(textValue);
     int? changedValue;
 
@@ -125,9 +126,11 @@ class _MyValueChangerState extends State<MyValueChanger> {
                 child: _ChangeValueIcon(
                     height: height,
                     subtract: true,
-                    onPressed: isSubtractEnabled
-                        ? () => _handleGoalValueDecrement(_controller.text)
-                        : null),
+                    onPressed: () {
+                      isSubtractEnabled
+                          ? _handleGoalValueDecrement(_controller.text)
+                          : null;
+                    }),
               ),
               Flexible(
                 flex: 2,

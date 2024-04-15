@@ -135,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 },
                 child: Text("Foreslå retter")),
-            MyValueChanger(handleValueChange: (newVal){}, value: 1),
+            MyValueChanger(handleValueChange: (newVal){}, value: 1, minValue: 1,),
             OutlinedButton(
                 onPressed: () async {
                   final response = await _apiExample(generateRestrictions);
