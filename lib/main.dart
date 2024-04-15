@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:mad_app_eksamensprojekt/models/recipe.dart';
 import 'package:mad_app_eksamensprojekt/models/recipe_suggestion.dart';
 import 'package:mad_app_eksamensprojekt/pages/recipe_page.dart';
@@ -87,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             CheckboxListTile(
-                title: Text("Vegetar"),
+                title: const Text("Vegetar"),
                 value: onlyVegitarian,
                 onChanged: (val) {
                   if (val == null) return;
@@ -96,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 }),
             CheckboxListTile(
-                title: Text("Vegansk"),
+                title: const Text("Vegansk"),
                 value: onlyVegan,
                 onChanged: (val) {
                   if (val == null) return;
@@ -105,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 }),
             CheckboxListTile(
-                title: Text("Laktosefri"),
+                title: const Text("Laktosefri"),
                 value: noLactose,
                 onChanged: (val) {
                   if (val == null) return;
@@ -114,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 }),
             CheckboxListTile(
-                title: Text("Glutenfri"),
+                title: const Text("Glutenfri"),
                 value: noGluten,
                 onChanged: (val) {
                   if (val == null) return;
@@ -138,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     recipeSuggestions.addAll(suggestions);
                   });
                 },
-                child: Text("Foreslå retter")),
+                child: const Text("Foreslå retter")),
             Text(
               "Antal retter",
               style: Theme.of(context).textTheme.titleMedium,
@@ -177,9 +178,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 child: const Text("Skab ret")),
             !isLoadingDishes
-                ? SizedBox.shrink()
-                : FittedBox(child: CircularProgressIndicator()),
-            Divider(),
+                ? const SizedBox.shrink()
+                : const FittedBox(child: CircularProgressIndicator()),
+            const Divider(),
             ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -190,9 +191,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     key: Key("item-$index"),
                     background: Container(
                       color: Colors.red,
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Icon(Icons.delete_forever)),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(Icons.delete_forever),
+                          Icon(Icons.delete_forever),
+                        ],
+                      ),
                     ),
                     onDismissed: (direction) =>
                         Provider.of<RecipesProvider>(context, listen: false)
@@ -211,10 +216,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   );
                 }),
-            Divider(),
+            const Divider(),
             ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: recipeSuggestions.length,
                 itemBuilder: (context, index) {
                   final RecipeSuggestion indexSuggestion =
@@ -225,13 +230,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     subtitle: Text(indexSuggestion.shortDescription),
                   );
                 }),
-            Divider(),
+            const Divider(),
             OutlinedButton(
                 onPressed: () {
                   Provider.of<RecipesProvider>(context, listen: false)
                       .addRecipe = Recipe.fromMap(recipeExamples.first);
                 },
-                child: Text("Add exampleIngredient")),
+                child: const Text("Add exampleIngredient")),
             OutlinedButton(
                 onPressed: () {
                   String myString = content!
@@ -245,7 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   //print(content!.myJsonDecode);
                 },
-                child: Text("debug print"))
+                child: const Text("debug print"))
           ],
         ),
       ),
