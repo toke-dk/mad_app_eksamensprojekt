@@ -64,6 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return restrictions;
   }
 
+  OpenAIChatCompletionModel? creativeDishes;
+
   @override
   Widget build(BuildContext context) {
     print(Provider.of<RecipesProvider>(context).getRecipes.map((e) => e.name));
@@ -111,6 +113,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     noGluten = val;
                   });
                 }),
+            OutlinedButton(
+                onPressed: () async {
+                  creativeDishes =
+                      await createDishSuggestions(2, generateRestrictions);
+                  print(creativeDishes!.choices.first.message.content);
+                },
+                child: Text("Foreslå retter")),
             OutlinedButton(
                 onPressed: () async {
                   final response = await _apiExample(generateRestrictions);
@@ -226,6 +235,47 @@ Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
     temperature: 0.2,
     maxTokens: 700,
   );
+
+  return chatCompletion;
+}
+
+Future<OpenAIChatCompletionModel> createDishSuggestions(
+    int amountOfSuggestions, List<String> requirements) async {
+  OpenAI.apiKey = Env.apiKey;
+
+  final systemMessage = OpenAIChatCompletionChoiceMessageModel(
+    content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+        '''de givne beskeder skal følge JSON-formatet:
+          {"recipes": [{"title": TEXT,"description": TEXT,}]}
+        ''',
+      ),
+    ],
+    role: OpenAIChatMessageRole.assistant,
+  );
+
+  final userMessage = OpenAIChatCompletionChoiceMessageModel(
+    content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+          "Giv $amountOfSuggestions forslag til aftensmadsretter til en mand på 18 år"),
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+        "Krav til retten er dog at den skal være: ${requirements.join(',')}",
+      ),
+    ],
+    role: OpenAIChatMessageRole.user,
+  );
+
+  final requestMessages = [
+    systemMessage,
+    userMessage,
+  ];
+
+  OpenAIChatCompletionModel chatCompletion = await OpenAI.instance.chat.create(
+      model: "gpt-3.5-turbo-0125",
+      responseFormat: {"type": "json_object"},
+      messages: requestMessages,
+      temperature: 1,
+      maxTokens: 700);
 
   return chatCompletion;
 }
