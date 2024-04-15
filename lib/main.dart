@@ -242,7 +242,7 @@ Future<OpenAIChatCompletionModel> _apiExample(
   final systemMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        ''' retuner hvilken givet besked som præcis dette JSON-format:
+        ''' du skal følge dette JSON-format:
           "recipes": [{
             "name": TEXT,
             "description": TEXT,
@@ -253,11 +253,9 @@ Future<OpenAIChatCompletionModel> _apiExample(
         ''',
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "Hvor 'ingredientsForRecipe' beskriver hvor meget af en ingrediens der bliver brugt i opskriften. unit må kun være: g/mL/stk/tsk/spsk/fed",
+        "unit må kun være: g/mL/stk/tsk/spsk/fed",
       ),
-      OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "opskriften skal være på dansk",
-      ),
+
     ],
     role: OpenAIChatMessageRole.assistant,
   );
