@@ -71,6 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<RecipeSuggestion> recipeSuggestions = [];
 
+  int amountOfDishesToCreate = 1;
+
   @override
   Widget build(BuildContext context) {
     print(Provider.of<RecipesProvider>(context).getRecipes.map((e) => e.name));
@@ -135,10 +137,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 },
                 child: Text("Foreslå retter")),
-            MyValueChanger(handleValueChange: (newVal){}, value: 1, minValue: 1,),
+            Text(
+              "Antal retter",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            MyValueChanger(
+              handleValueChange: (newVal) {
+                setState(() {
+                  amountOfDishesToCreate = newVal;
+                });
+              },
+              value: 1,
+              minValue: 1,
+              maxValue: 7,
+            ),
             OutlinedButton(
                 onPressed: () async {
-                  final response = await _apiExample(generateRestrictions);
+                  final response = await _apiExample(
+                      requirements: generateRestrictions,
+                      amountOfDishes: amountOfDishesToCreate);
+
+                  setState(() {
+                    content = response;
+                  });
 
                   Provider.of<RecipesProvider>(context, listen: false)
                           .addAllRecipes =
@@ -192,17 +213,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text("Add exampleIngredient")),
             OutlinedButton(
                 onPressed: () {
-                  print((content!.myJsonDecode["recipes"] as List<dynamic>)
-                      .map((e) => Recipe.fromMap(e))
-                      .toList());
 
-                  Provider.of<RecipesProvider>(context, listen: false)
-                          .addAllRecipes =
-                      (content!.myJsonDecode["recipes"] as List<dynamic>)
-                          .map((e) => Recipe.fromMap(e))
-                          .toList();
-                  print(Provider.of<RecipesProvider>(context, listen: false)
-                      .getRecipes);
+
+
+
+                  String myString = content!.choices.first.message.content!.first.text.toString();
+                  int startIndex = 1800;
+                  int endIndex = myString.length;
+
+                  String substring = myString.substring(startIndex, endIndex);
+                  print(substring);
+
+
+                  //print(content!.myJsonDecode);
                 },
                 child: Text("debug print"))
           ],
@@ -212,13 +235,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
+Future<OpenAIChatCompletionModel> _apiExample(
+    {required List<String> requirements, required int amountOfDishes}) async {
   OpenAI.apiKey = Env.apiKey;
   // the system message that will be sent to the request.
   final systemMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        ''' retuner hvilken givet besked som dette JSON-format:
+        ''' retuner hvilken givet besked som præcis dette JSON-format:
           "recipes": [{
             "name": TEXT,
             "description": TEXT,
@@ -245,7 +269,7 @@ Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
   final userMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "Lav 2 aftensmadsretter til en mand på 18",
+        "Lav $amountOfDishes aftensmadsretter til en mand på 18",
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "Krav til retten er dog at den skal være: ${requirements.join(',')}",
@@ -267,7 +291,6 @@ Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
     seed: 6,
     messages: requestMessages,
     temperature: 1,
-    maxTokens: 700,
   );
 
   return chatCompletion;
