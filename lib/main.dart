@@ -6,6 +6,7 @@ import 'package:mad_app_eksamensprojekt/models/recipe.dart';
 import 'package:mad_app_eksamensprojekt/pages/recipe_page.dart';
 import 'package:mad_app_eksamensprojekt/providers/recipes_provider.dart';
 import 'package:mad_app_eksamensprojekt/shared/all_ingredients.dart';
+import 'package:mad_app_eksamensprojekt/shared/openai_extensions.dart';
 import 'package:mad_app_eksamensprojekt/shared/recipe_examples.dart';
 import 'package:provider/provider.dart';
 
@@ -64,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return restrictions;
   }
 
-  OpenAIChatCompletionModel? creativeDishes;
+  OpenAIChatCompletionModel? creativeDishesFromAI;
 
   @override
   Widget build(BuildContext context) {
@@ -115,9 +116,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 }),
             OutlinedButton(
                 onPressed: () async {
-                  creativeDishes =
+                  creativeDishesFromAI =
                       await createDishSuggestions(2, generateRestrictions);
-                  print(creativeDishes!.choices.first.message.content);
+                  print(creativeDishesFromAI!.myJsonDecode["recipes"][0]);
                 },
                 child: Text("Foreslå retter")),
             OutlinedButton(
@@ -132,8 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Provider.of<RecipesProvider>(context, listen: false)
                       .addRecipe = recipeFromAi;
 
-                  print(jsonDecode(
-                      response!.choices.first.message.content!.first.text!));
+                  print(response.myJsonDecode);
                 },
                 child: const Text("Skab ret")),
             Divider(),
@@ -167,8 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Recipe recipeFromAi = Recipe.fromMap(jsonDecode(
                       content!.choices.first.message.content!.first.text!));
 
-                  print(recipeFromAi.ingredientsForRecipe.map((e) => e.name));
-                  print(recipeFromAi.ingredientsForRecipe);
+                  print(creativeDishesFromAI!.myJsonDecode["recipes"][0]);
                 },
                 child: Text("debug print"))
           ],
@@ -247,7 +246,7 @@ Future<OpenAIChatCompletionModel> createDishSuggestions(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         '''de givne beskeder skal følge JSON-formatet:
-          {"recipes": [{"title": TEXT,"description": TEXT,}]}
+          {"recipes": [{"title": TEXT,"shortDescription": TEXT}]}
         ''',
       ),
     ],
