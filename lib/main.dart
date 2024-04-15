@@ -137,16 +137,14 @@ class _MyHomePageState extends State<MyHomePage> {
             OutlinedButton(
                 onPressed: () async {
                   final response = await _apiExample(generateRestrictions);
-                  setState(() {
-                    content = response;
-                  });
-                  // print(content!.choices.first.message.toString().substring(900,content!.choices.first.message.toString().length));
-                  Recipe recipeFromAi = Recipe.fromMap(jsonDecode(
-                      content!.choices.first.message.content!.first.text!));
-                  Provider.of<RecipesProvider>(context, listen: false)
-                      .addRecipe = recipeFromAi;
 
-                  print(response.myJsonDecode);
+                  Provider.of<RecipesProvider>(context, listen: false)
+                          .addAllRecipes =
+                      (response.myJsonDecode["recipes"] as List<dynamic>)
+                          .map((e) => Recipe.fromMap(e))
+                          .toList();
+
+                  debugPrint(response.myJsonDecode.toString());
                 },
                 child: const Text("Skab ret")),
             Divider(),
@@ -192,10 +190,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text("Add exampleIngredient")),
             OutlinedButton(
                 onPressed: () {
-                  Recipe recipeFromAi = Recipe.fromMap(jsonDecode(
-                      content!.choices.first.message.content!.first.text!));
+                  print((content!.myJsonDecode["recipes"] as List<dynamic>)
+                      .map((e) => Recipe.fromMap(e))
+                      .toList());
 
-                  print(creativeDishesFromAI!.myJsonDecode["recipes"][0]);
+                  Provider.of<RecipesProvider>(context, listen: false)
+                          .addAllRecipes =
+                      (content!.myJsonDecode["recipes"] as List<dynamic>)
+                          .map((e) => Recipe.fromMap(e))
+                          .toList();
+                  print(Provider.of<RecipesProvider>(context, listen: false)
+                      .getRecipes);
                 },
                 child: Text("debug print"))
           ],
@@ -212,13 +217,13 @@ Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         ''' retuner hvilken givet besked som dette JSON-format:
-          {
+          "recipes": [{
             "name": TEXT,
             "description": TEXT,
             "durationInMins": INTEGER,
             "ingredientsForRecipe": List<{"name": TEXT, "quantity": DOUBLE, "unit": STRING, "price": DOUBLE}>,
             "instructions": List<TEXT>,
-          }
+          }]
         ''',
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
@@ -238,7 +243,7 @@ Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
   final userMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "Lav en aftensmadsret til en mand på 18",
+        "Lav 2 aftensmadsretter til en mand på 18",
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "Krav til retten er dog at den skal være: ${requirements.join(',')}",

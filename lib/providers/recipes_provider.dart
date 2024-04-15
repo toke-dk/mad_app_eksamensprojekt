@@ -14,4 +14,9 @@ class RecipesProvider extends ChangeNotifier {
     _recipes.add(recipe);
     notifyListeners();
   }
+
+  set addAllRecipes(List<Recipe> recipes) {
+    _recipes.addAll(recipes);
+    notifyListeners();
+  }
 }

@@ -29,6 +29,7 @@ class Recipe {
 
   // From map: create a Recipe object from a map structure
   factory Recipe.fromMap(Map<String, dynamic> map) {
+    print("map: ${map}");
     return Recipe(
       name: map['name'] as String,
       description: map['description'] as String,
