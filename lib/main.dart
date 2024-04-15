@@ -191,9 +191,6 @@ Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "opskriften skal være på dansk",
       ),
-      OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "krav til retten: ${requirements.join(',')}",
-      ),
     ],
     role: OpenAIChatMessageRole.assistant,
   );
@@ -205,7 +202,10 @@ Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
   final userMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "Lav en aftensmadsret til en mand på 18",
+        "Lav en aftensmadsret til en mand på 18, ud fra disse madvarer: ${kSampleIngredients.map((e) => e.name)}",
+      ),
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+        "Krav til retten er dog at den skal være: ${requirements.join(',')}",
       ),
     ],
     role: OpenAIChatMessageRole.user,
