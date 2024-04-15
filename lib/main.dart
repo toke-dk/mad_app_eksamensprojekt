@@ -73,6 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int amountOfDishesToCreate = 1;
 
+  bool isLoadingDishes = false;
+
   @override
   Widget build(BuildContext context) {
     print(Provider.of<RecipesProvider>(context).getRecipes.map((e) => e.name));
@@ -153,11 +155,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             OutlinedButton(
                 onPressed: () async {
+                  setState(() {
+                    isLoadingDishes = true;
+                  });
                   final response = await _apiExample(
                       requirements: generateRestrictions,
                       amountOfDishes: amountOfDishesToCreate);
 
                   setState(() {
+                    isLoadingDishes = false;
                     content = response;
                   });
 
@@ -170,6 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   debugPrint(response.myJsonDecode.toString());
                 },
                 child: const Text("Skab ret")),
+            !isLoadingDishes ? SizedBox.shrink() : FittedBox(child: CircularProgressIndicator()),
             Divider(),
             ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
