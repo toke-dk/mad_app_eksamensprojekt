@@ -219,7 +219,7 @@ Future<OpenAIChatCompletionModel> _apiExample(List<String> requirements) async {
 
 // the actual request.
   OpenAIChatCompletionModel chatCompletion = await OpenAI.instance.chat.create(
-    model: "gpt-3.5-turbo-1106",
+    model: "gpt-3.5-turbo-0125",
     responseFormat: {"type": "json_object"},
     seed: 6,
     messages: requestMessages,
