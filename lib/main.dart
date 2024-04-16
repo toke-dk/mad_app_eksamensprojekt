@@ -203,6 +203,30 @@ class _MyHomePageState extends State<MyHomePage> {
                         Provider.of<RecipesProvider>(context, listen: false)
                             .removeRecipe(indexRecipe),
                     child: ListTile(
+                      leading: IconButton(
+                        icon: Icon(Icons.refresh),
+                        onPressed: () async {
+                          setState(() {
+                            isLoadingDishes = true;
+                          });
+
+                          final response = await _apiExample(
+                              requirements: generateRestrictions,
+                              amountOfDishes: 1);
+
+                          setState(() {
+                            isLoadingDishes = false;
+                          });
+
+                          final Recipe recipeToReplace = (response
+                                  .myJsonDecode["recipes"] as List<dynamic>)
+                              .map((e) => Recipe.fromMap(e))
+                              .first;
+
+                          Provider.of<RecipesProvider>(context, listen: false)
+                              .replaceRecipe(indexRecipe, recipeToReplace);
+                        },
+                      ),
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -292,7 +316,7 @@ Future<OpenAIChatCompletionModel> _apiExample(
   final userMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "Lav $amountOfDishes aftensmadsretter til en mand på 18",
+        "Lav $amountOfDishes aftensmadsret til en mand på 18",
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "Krav til retten er dog at den skal være: ${requirements.join(',')}",

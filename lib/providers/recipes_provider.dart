@@ -24,4 +24,11 @@ class RecipesProvider extends ChangeNotifier {
     _recipes.remove(recipe);
     notifyListeners();
   }
+
+  void replaceRecipe(Recipe recipeToReplace, Recipe newRecipe) {
+    if (!_recipes.contains(recipeToReplace)) return;
+    int index = _recipes.indexOf(recipeToReplace);
+    _recipes[index] = newRecipe;
+    notifyListeners();
+  }
 }
