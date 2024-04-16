@@ -278,6 +278,9 @@ Future<OpenAIChatCompletionModel> _apiExample(
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "unit må kun være: g/mL/stk/tsk/spsk/fed",
       ),
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+        "opskriften skal være på dansk",
+      ),
     ],
     role: OpenAIChatMessageRole.assistant,
   );
