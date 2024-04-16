@@ -126,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
             OutlinedButton(
                 onPressed: () async {
                   final OpenAIChatCompletionModel result =
-                      await createDishSuggestions(2, generateRestrictions);
+                      await createDishSuggestions(amountOfDishesToCreate, generateRestrictions);
 
                   final List<dynamic> recipesMap =
                       result.myJsonDecode["recipes"];
@@ -289,7 +289,7 @@ Future<OpenAIChatCompletionModel> _apiExample(
   final systemMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        ''' du skal følge dette JSON-format:
+        '''de givne beskeder skal følge JSON-formatet på dansk:
           "recipes": [{
             "name": TEXT,
             "description": TEXT,
@@ -302,9 +302,6 @@ Future<OpenAIChatCompletionModel> _apiExample(
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "unit må kun være: g/mL/stk/tsk/spsk/fed",
       ),
-      OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "opskriften skal være på dansk",
-      ),
     ],
     role: OpenAIChatMessageRole.assistant,
   );
@@ -316,7 +313,7 @@ Future<OpenAIChatCompletionModel> _apiExample(
   final userMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "Lav $amountOfDishes aftensmadsret til en mand på 18",
+        "Giv $amountOfDishes unikt forslag aftensmadsret til en mand på 18",
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "Krav til retten er dog at den skal være: ${requirements.join(',')}",
@@ -335,7 +332,6 @@ Future<OpenAIChatCompletionModel> _apiExample(
   OpenAIChatCompletionModel chatCompletion = await OpenAI.instance.chat.create(
     model: "gpt-3.5-turbo-0125",
     responseFormat: {"type": "json_object"},
-    seed: 6,
     messages: requestMessages,
     temperature: 1,
   );
