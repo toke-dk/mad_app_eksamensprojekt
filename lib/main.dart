@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mad_app_eksamensprojekt/models/recipe.dart';
 import 'package:mad_app_eksamensprojekt/models/recipe_suggestion.dart';
+import 'package:mad_app_eksamensprojekt/pages/shopping_list.dart';
 import 'package:mad_app_eksamensprojekt/pages/recipe_page.dart';
 import 'package:mad_app_eksamensprojekt/providers/recipes_provider.dart';
 import 'package:mad_app_eksamensprojekt/shared/all_ingredients.dart';
@@ -26,15 +27,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (context) => RecipesProvider(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const MyHomePage(title: 'Teknologi Årsprojekt'),
       ),
-      home: ChangeNotifierProvider(
-          create: (context) => RecipesProvider(),
-          child: const MyHomePage(title: 'Teknologi Årsprojekt')),
     );
   }
 }
@@ -126,7 +128,8 @@ class _MyHomePageState extends State<MyHomePage> {
             OutlinedButton(
                 onPressed: () async {
                   final OpenAIChatCompletionModel result =
-                      await createDishSuggestions(amountOfDishesToCreate, generateRestrictions);
+                      await createDishSuggestions(
+                          amountOfDishesToCreate, generateRestrictions);
 
                   final List<dynamic> recipesMap =
                       result.myJsonDecode["recipes"];
@@ -240,6 +243,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   );
                 }),
+            OutlinedButton(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ShoppingListPage())),
+                child: Text("Se ingredienserne")),
             const Divider(),
             ListView.builder(
                 shrinkWrap: true,
