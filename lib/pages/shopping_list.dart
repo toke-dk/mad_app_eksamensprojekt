@@ -9,11 +9,13 @@ class ShoppingListPage extends StatelessWidget {
   const ShoppingListPage({super.key});
 
 
-
   @override
   Widget build(BuildContext context) {
+    final List<Recipe> recipes = context
+        .read<RecipesProvider>()
+        .getRecipes;
 
-    final List<Recipe> recipes = context.read<RecipesProvider>().getRecipes;
+    final List<Ingredient> gatheredIngredients = recipes.gatheredIngredients;
 
 
     print("gathered ${recipes.gatheredIngredients.getngredientsNameLowerCase}");
@@ -24,13 +26,20 @@ class ShoppingListPage extends StatelessWidget {
         children: [
           ExpansionPanelList(
             children: [
-              ExpansionPanel(headerBuilder: (context, _){
+              ExpansionPanel(headerBuilder: (context, _) {
                 return Text("data");
               }, body: Text("open"))
             ],
           ),
           Text("Indkøbsliste"),
-          Text(recipes.gatheredIngredients.getngredientsNameLowerCase.toString()),
+          ListView.builder(
+              itemCount: gatheredIngredients.length,
+              shrinkWrap: true,
+              itemBuilder: (context, int index) {
+                final Ingredient indexIngredient = gatheredIngredients[index];
+                return Text("${indexIngredient.name}: ${indexIngredient
+                    .quantity} ${indexIngredient.unit}");
+              }),
           Text("Estimeret pris for alle ingredienser:"),
           Text(recipes.getRecipesPrice.toString())
         ],
