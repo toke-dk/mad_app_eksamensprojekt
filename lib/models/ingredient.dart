@@ -32,6 +32,13 @@ class Ingredient {
   }
 }
 
+extension IngredientsExtension on List<Ingredient> {
+  double get getTotalPrice =>
+      map((e) => e.price).reduce((value, element) => value + element);
+
+  List<String> get getngredientsNameLowerCase => map((e) => e.name.toLowerCase()).toList();
+}
+
 const _jsonFormatComment = '''
 This is how the format for the ingredient should be
 {"name": str, "category": str, "quantity": double, "unit": str, "price": double}

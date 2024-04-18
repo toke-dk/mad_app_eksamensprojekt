@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mad_app_eksamensprojekt/models/ingredient.dart';
 import 'package:mad_app_eksamensprojekt/providers/recipes_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,9 @@ class ShoppingListPage extends StatelessWidget {
 
     final List<Recipe> recipes = context.read<RecipesProvider>().getRecipes;
 
+
+    print("gathered ${recipes.gatheredIngredients.getngredientsNameLowerCase}");
+
     return Scaffold(
       appBar: AppBar(title: Text("Inkøbsliste"),),
       body: Column(
@@ -24,7 +28,11 @@ class ShoppingListPage extends StatelessWidget {
                 return Text("data");
               }, body: Text("open"))
             ],
-          )
+          ),
+          Text("Indkøbsliste"),
+          Text(recipes.gatheredIngredients.getngredientsNameLowerCase.toString()),
+          Text("Estimeret pris for alle ingredienser:"),
+          Text(recipes.getRecipesPrice.toString())
         ],
       ),
     );
