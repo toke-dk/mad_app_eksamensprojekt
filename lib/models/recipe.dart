@@ -59,8 +59,10 @@ extension RecipesExtension on List<Recipe> {
     List<Ingredient> allIngredients = getAllIngredients;
 
     for (Ingredient indexIngredient in allIngredients) {
-      Ingredient? equalIngredient = ingredientsToReturn.where(
-          (n) => n.name.toLowerCase() == indexIngredient.name.toLowerCase()).firstOrNull;
+      Ingredient? equalIngredient = ingredientsToReturn
+          .where(
+              (n) => n.name.toLowerCase() == indexIngredient.name.toLowerCase())
+          .firstOrNull;
 
       if (equalIngredient != null &&
           equalIngredient.unit.toLowerCase() ==
