@@ -15,6 +15,7 @@ import 'package:mad_app_eksamensprojekt/shared/recipe_examples.dart';
 import 'package:mad_app_eksamensprojekt/shared/widgets/display_recipe.dart';
 import 'package:mad_app_eksamensprojekt/shared/widgets/my_value_changer.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import 'env/env.dart';
 import 'models/ingredient.dart';
@@ -80,6 +81,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool isLoadingDishes = false;
 
+  SfRangeValues rangeValues = SfRangeValues(100, 200);
+  int minRange = 50;
+  int maxRange = 1000;
+
   @override
   Widget build(BuildContext context) {
     print(Provider.of<RecipesProvider>(context).getRecipes.map((e) => e.name));
@@ -127,6 +132,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     noGluten = val;
                   });
                 }),
+            Text(
+                "Total pris: ${rangeValues.start <= minRange ? '<' : ''}${rangeValues.start}kr til ${rangeValues.end >= maxRange ? '>' : ''}${rangeValues.end}kr"),
+            SfRangeSlider(
+                values: rangeValues,
+                min: minRange,
+                max: maxRange,
+                interval: 100,
+                stepSize: 50,
+
+                showTicks: true,
+                showLabels: true,
+                onChanged: (SfRangeValues vals) => setState(() {
+                      rangeValues = vals;
+                    })),
             OutlinedButton(
                 onPressed: () async {
                   final OpenAIChatCompletionModel result =

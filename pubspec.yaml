@@ -39,6 +39,7 @@ dependencies:
   dart_openai: ^5.1.0
   provider: ^6.1.2
   gap: ^3.0.1
+  syncfusion_flutter_sliders: ^25.1.40
 
 dev_dependencies:
   flutter_test:
