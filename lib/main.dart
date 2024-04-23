@@ -55,6 +55,12 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+extension MyExtenstion on SfRangeValues {
+  set setEnd(int newEnd) => SfRangeValues(start, newEnd);
+
+  set setStart(int newStart) => SfRangeValues(newStart, end);
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   List<Ingredient> get ingredients => recipes.first.ingredientsForRecipe;
 
@@ -83,17 +89,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool isLoadingDishes = false;
 
-
   SfRangeValues rangeValues = SfRangeValues(50, 100);
 
-  int minRange = 50;
-  int get maxRange => 100*amountOfDishesToCreate;
-  double get stepSize => maxRange/10;
+  int get minRange {
+    return 50 * amountOfDishesToCreate;
+  }
+
+  int get maxRange {
+    return 100 * amountOfDishesToCreate;
+  }
+
+  double get stepSize => maxRange / 10;
 
   @override
   Widget build(BuildContext context) {
-
-
     print(Provider.of<RecipesProvider>(context).getRecipes.map((e) => e.name));
     return Scaffold(
       appBar: AppBar(
@@ -178,6 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
               handleValueChange: (newVal) {
                 setState(() {
                   amountOfDishesToCreate = newVal;
+                  rangeValues = SfRangeValues(minRange, minRange + stepSize);
                 });
               },
               value: 1,
