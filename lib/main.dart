@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:mad_app_eksamensprojekt/models/recipe.dart';
 import 'package:mad_app_eksamensprojekt/models/recipe_suggestion.dart';
@@ -82,12 +83,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool isLoadingDishes = false;
 
-  SfRangeValues rangeValues = SfRangeValues(100, 200);
+
+  SfRangeValues rangeValues = SfRangeValues(50, 100);
+
   int minRange = 50;
-  int maxRange = 1000;
+  int get maxRange => 100*amountOfDishesToCreate;
+  double get stepSize => maxRange/10;
 
   @override
   Widget build(BuildContext context) {
+
+
     print(Provider.of<RecipesProvider>(context).getRecipes.map((e) => e.name));
     return Scaffold(
       appBar: AppBar(
@@ -139,8 +145,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 values: rangeValues,
                 min: minRange,
                 max: maxRange,
-                interval: 100,
-                stepSize: 50,
+                interval: stepSize,
+                stepSize: stepSize,
                 showTicks: true,
                 showLabels: true,
                 onChanged: (SfRangeValues vals) => setState(() {
