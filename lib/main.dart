@@ -12,6 +12,7 @@ import 'package:mad_app_eksamensprojekt/providers/recipes_provider.dart';
 import 'package:mad_app_eksamensprojekt/shared/all_ingredients.dart';
 import 'package:mad_app_eksamensprojekt/shared/openai_extensions.dart';
 import 'package:mad_app_eksamensprojekt/shared/recipe_examples.dart';
+import 'package:mad_app_eksamensprojekt/shared/widgets/display_recipe.dart';
 import 'package:mad_app_eksamensprojekt/shared/widgets/my_value_changer.dart';
 import 'package:provider/provider.dart';
 
@@ -206,58 +207,34 @@ class _MyHomePageState extends State<MyHomePage> {
                     onDismissed: (direction) =>
                         Provider.of<RecipesProvider>(context, listen: false)
                             .removeRecipe(indexRecipe),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                          leading: IconButton(
-                            icon: Icon(Icons.refresh),
-                            onPressed: () async {
-                              setState(() {
-                                isLoadingDishes = true;
-                              });
+                    child: DisplayRecipe(
+                      onRefreshPressed: () async {
+                        setState(() {
+                          isLoadingDishes = true;
+                        });
 
-                              final response = await _apiExample(
-                                  requirements: generateRestrictions,
-                                  amountOfDishes: 1);
+                        final response = await _apiExample(
+                            requirements: generateRestrictions,
+                            amountOfDishes: 1);
 
-                              setState(() {
-                                isLoadingDishes = false;
-                              });
+                        setState(() {
+                          isLoadingDishes = false;
+                        });
 
-                              final Recipe recipeToReplace = (response
-                                      .myJsonDecode["recipes"] as List<dynamic>)
-                                  .map((e) => Recipe.fromMap(e))
-                                  .first;
+                        final Recipe recipeToReplace =
+                            (response.myJsonDecode["recipes"] as List<dynamic>)
+                                .map((e) => Recipe.fromMap(e))
+                                .first;
 
-                              Provider.of<RecipesProvider>(context,
-                                      listen: false)
-                                  .replaceRecipe(indexRecipe, recipeToReplace);
-                            },
-                          ),
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      RecipePage(recipe: indexRecipe))),
-                          title: Text("${indexRecipe.name}"),
-                          subtitle: Text(
-                              "${indexRecipe.durationInMins} minutter, ${indexRecipe.ingredientsForRecipe.length} ingredienser,  ${indexRecipe.getTotalPrice.roundToDouble()} .-"),
-                        ),
-                        Container(
-                            padding: const EdgeInsets.only(left: 20),
-                            height: 40,
-                            child: FittedBox(
-                              child: MyValueChanger(
-                                  handleValueChange: (int newVal) {
-                                    Provider.of<RecipesProvider>(context,
-                                            listen: false)
-                                        .changeRecipeAmounts(
-                                            indexRecipe, newVal);
-                                  },
-                                  value: indexRecipe.amounts),
-                            )),
-                      ],
+                        Provider.of<RecipesProvider>(context, listen: false)
+                            .replaceRecipe(indexRecipe, recipeToReplace);
+                      },
+                      onRecipePressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  RecipePage(recipe: indexRecipe))),
+                      recipe: indexRecipe,
                     ),
                   );
                 }),
