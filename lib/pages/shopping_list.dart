@@ -12,7 +12,8 @@ class ShoppingListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Recipe> recipes = context.read<RecipesProvider>().getRecipes;
 
-    int recipesAmount(Recipe recipe) => context.read<RecipesProvider>().getRecipeAmountS(recipe)!;
+    int recipesAmount(Recipe recipe) =>
+        context.read<RecipesProvider>().getRecipeAmountS(recipe)!;
 
     final List<Ingredient> gatheredIngredients = recipes.gatheredIngredients;
 
