@@ -22,15 +22,14 @@ class ShoppingListPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ExpansionPanelList(
-            children: [
-              ExpansionPanel(
-                  headerBuilder: (context, _) {
-                    return Text("data");
-                  },
-                  body: Text("open"))
-            ],
-          ),
+          ListView.builder(
+              itemCount: recipes.length,
+              shrinkWrap: true,
+              itemBuilder: (context, int index) {
+                final Recipe indexRecipe = recipes[index];
+                return Text(
+                    indexRecipe.name);
+              }),
           Text("Indkøbsliste"),
           ListView.builder(
               itemCount: gatheredIngredients.length,
