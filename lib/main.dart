@@ -296,7 +296,7 @@ Future<OpenAIChatCompletionModel> _apiExample(
   final systemMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        '''de givne beskeder skal følge JSON-formatet på dansk:
+        '''de givne beskeder skal følge opskrift JSON-formatet på dansk:
           "recipes": [{
             "name": TEXT,
             "description": TEXT,
@@ -320,7 +320,7 @@ Future<OpenAIChatCompletionModel> _apiExample(
   final userMessage = OpenAIChatCompletionChoiceMessageModel(
     content: [
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "Giv $amountOfDishes unikt forslag aftensmadsret til en mand på 18",
+        "Giv $amountOfDishes unik forslag aftensmadsret til en mand på 18",
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "Krav til retten er dog at den skal være: ${requirements.join(',')}",
