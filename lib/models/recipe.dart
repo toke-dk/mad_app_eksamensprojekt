@@ -76,7 +76,7 @@ extension RecipesExtension on List<Recipe> {
               name: equalIngredient.name,
               quantity: equalIngredient.quantity + indexIngredient.quantity,
               unit: equalIngredient.unit,
-              price: equalIngredient.price)
+              price: equalIngredient.price + indexIngredient.price)
         ]);
 
         //print("returner ${ingredientsToReturn.map((e) => e.toMap())}");
