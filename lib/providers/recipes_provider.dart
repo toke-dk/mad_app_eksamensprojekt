@@ -10,6 +10,13 @@ class RecipesProvider extends ChangeNotifier {
 
   List<Recipe> get getRecipes => _recipes;
 
+  int? getRecipeAmountS(Recipe recipe) {
+    if (!_recipes.contains(recipe)) return null;
+    int index = _recipes.indexOf(recipe);
+    print("amount: ${_recipes[index].amounts}");
+    return _recipes[index].amounts;
+  }
+
   set addRecipe(Recipe recipe) {
     _recipes.add(recipe);
     notifyListeners();
@@ -33,9 +40,10 @@ class RecipesProvider extends ChangeNotifier {
   }
 
   void changeRecipeAmounts(Recipe recipe, int amount) {
+    print("amount: ${amount}");
     if (!_recipes.contains(recipe)) return;
     int index = _recipes.indexOf(recipe);
-    _recipes[index].amounts += 1;
+    _recipes[index].amounts = amount;
     notifyListeners();
   }
 }

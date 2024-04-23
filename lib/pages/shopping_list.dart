@@ -12,6 +12,8 @@ class ShoppingListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Recipe> recipes = context.read<RecipesProvider>().getRecipes;
 
+    int recipesAmount(Recipe recipe) => context.read<RecipesProvider>().getRecipeAmountS(recipe)!;
+
     final List<Ingredient> gatheredIngredients = recipes.gatheredIngredients;
 
     // print("gathered ${recipes.gatheredIngredients.getngredientsNameLowerCase}");
@@ -28,7 +30,7 @@ class ShoppingListPage extends StatelessWidget {
               itemBuilder: (context, int index) {
                 final Recipe indexRecipe = recipes[index];
                 return Text(
-                    indexRecipe.name);
+                    "${recipesAmount(indexRecipe)} x ${indexRecipe.name}");
               }),
           Text("Indkøbsliste"),
           ListView.builder(
