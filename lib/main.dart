@@ -307,7 +307,7 @@ Future<OpenAIChatCompletionModel> _apiExample(
         ''',
       ),
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
-        "unit må kun være: g/mL/stk/tsk/spsk/fed",
+        "unit må kun være: g (som for eksempel bruges til kød), mL, stk (som kun bruges til grøntsager eller frugter), tsk, spsk, fed",
       ),
     ],
     role: OpenAIChatMessageRole.assistant,

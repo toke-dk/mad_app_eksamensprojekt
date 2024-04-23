@@ -58,18 +58,30 @@ extension RecipesExtension on List<Recipe> {
 
     List<Ingredient> allIngredients = getAllIngredients;
 
-    for (Ingredient ingredient in allIngredients) {
-      Ingredient? equalIngredient =
-          ingredientsToReturn.getngredientsNameLowerCase.contains(ingredient.name.toLowerCase())
-              ? ingredient
-              : null;
+    for (Ingredient indexIngredient in allIngredients) {
+      Ingredient? equalIngredient = ingredientsToReturn.where(
+          (n) => n.name.toLowerCase() == indexIngredient.name.toLowerCase()).firstOrNull;
 
       if (equalIngredient != null &&
-          equalIngredient.unit.toLowerCase() == ingredient.unit.toLowerCase()) {
-        equalIngredient.quantity += ingredient.quantity;
-        //print("returner ${ingredientsToReturn.getngredientsName}");
+          equalIngredient.unit.toLowerCase() ==
+              indexIngredient.unit.toLowerCase()) {
+        print(
+            "again: ${indexIngredient == equalIngredient}, old: ${equalIngredient.quantity}, new ${indexIngredient.quantity} = ${equalIngredient.quantity + indexIngredient.quantity}");
+
+        int index = ingredientsToReturn.getngredientsNameLowerCase
+            .indexOf(indexIngredient.name.toLowerCase());
+
+        ingredientsToReturn.replaceRange(index, index + 1, [
+          Ingredient(
+              name: equalIngredient.name,
+              quantity: equalIngredient.quantity + indexIngredient.quantity,
+              unit: equalIngredient.unit,
+              price: equalIngredient.price)
+        ]);
+
+        //print("returner ${ingredientsToReturn.map((e) => e.toMap())}");
       } else {
-        ingredientsToReturn.add(ingredient);
+        ingredientsToReturn.add(indexIngredient);
       }
     }
 

@@ -18,7 +18,7 @@ class ShoppingListPage extends StatelessWidget {
     final List<Ingredient> gatheredIngredients = recipes.gatheredIngredients;
 
 
-    print("gathered ${recipes.gatheredIngredients.getngredientsNameLowerCase}");
+    // print("gathered ${recipes.gatheredIngredients.getngredientsNameLowerCase}");
 
     return Scaffold(
       appBar: AppBar(title: Text("Inkøbsliste"),),
