@@ -8,14 +8,13 @@ class Recipe {
   List<String> instructions;
   int amounts;
 
-  Recipe({
-    required this.name,
-    required this.description,
-    required this.durationInMins,
-    required this.ingredientsForRecipe,
-    required this.instructions,
-    required this.amounts
-  });
+  Recipe(
+      {required this.name,
+      required this.description,
+      required this.durationInMins,
+      required this.ingredientsForRecipe,
+      required this.instructions,
+      required this.amounts});
 
   // To map: convert each field to a compatible map structure
   Map<String, dynamic> toMap() {
@@ -42,19 +41,27 @@ class Recipe {
                   Ingredient.fromMap(ingredientMap as Map<String, dynamic>))
               .toList() ??
           [],
-      instructions: map['instructions']?.cast<String>() ?? [], amounts: (map['amounts'] as int?) ?? 1,
+      instructions: map['instructions']?.cast<String>() ?? [],
+      amounts: (map['amounts'] as int?) ?? 1,
     );
   }
 
-  double get getTotalPrice => ingredientsForRecipe.getTotalPrice;
+  double get getTotalPrice => getAllIngredients.getTotalPrice;
+
+  List<Ingredient> get getAllIngredients {
+    return ingredientsForRecipe
+        .expand((element) => List.filled(amounts, element))
+        .toList();
+  }
 }
 
 extension RecipesExtension on List<Recipe> {
   double get getRecipesPrice =>
       map((e) => e.getTotalPrice).reduce((value, element) => value + element);
 
-  List<Ingredient> get getAllIngredients =>
-      map((e) => e.ingredientsForRecipe).expand((element) => element).toList();
+  List<Ingredient> get getAllIngredients => map((e) {
+        return e.getAllIngredients;
+      }).expand((element) => element).toList();
 
   List<Ingredient> get gatheredIngredients {
     List<Ingredient> ingredientsToReturn = [];
