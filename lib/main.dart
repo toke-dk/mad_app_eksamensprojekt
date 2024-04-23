@@ -11,6 +11,7 @@ import 'package:mad_app_eksamensprojekt/pages/recipe_page.dart';
 import 'package:mad_app_eksamensprojekt/providers/recipes_provider.dart';
 import 'package:mad_app_eksamensprojekt/shared/all_ingredients.dart';
 import 'package:mad_app_eksamensprojekt/shared/openai_extensions.dart';
+import 'package:mad_app_eksamensprojekt/shared/price_range_string.dart';
 import 'package:mad_app_eksamensprojekt/shared/recipe_examples.dart';
 import 'package:mad_app_eksamensprojekt/shared/widgets/display_recipe.dart';
 import 'package:mad_app_eksamensprojekt/shared/widgets/my_value_changer.dart';
@@ -133,14 +134,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 }),
             Text(
-                "Total pris: ${rangeValues.start <= minRange ? '<' : ''}${rangeValues.start}kr til ${rangeValues.end >= maxRange ? '>' : ''}${rangeValues.end}kr"),
+                "Total pris: ${getPriceRangeString(rangeValues, minRange, maxRange)}"),
             SfRangeSlider(
                 values: rangeValues,
                 min: minRange,
                 max: maxRange,
                 interval: 100,
                 stepSize: 50,
-
                 showTicks: true,
                 showLabels: true,
                 onChanged: (SfRangeValues vals) => setState(() {
@@ -185,7 +185,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                   final response = await _apiExample(
                       requirements: generateRestrictions,
-                      amountOfDishes: amountOfDishesToCreate);
+                      amountOfDishes: amountOfDishesToCreate,
+                      priceRangeString:
+                          getPriceRangeString(rangeValues, minRange, maxRange));
 
                   setState(() {
                     isLoadingDishes = false;
@@ -234,7 +236,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
                         final response = await _apiExample(
                             requirements: generateRestrictions,
-                            amountOfDishes: 1);
+                            amountOfDishes: 1,
+                            priceRangeString: getPriceRangeString(
+                                rangeValues, minRange, maxRange));
 
                         setState(() {
                           isLoadingDishes = false;
@@ -304,7 +308,9 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 Future<OpenAIChatCompletionModel> _apiExample(
-    {required List<String> requirements, required int amountOfDishes}) async {
+    {required List<String> requirements,
+    required int amountOfDishes,
+    required String priceRangeString}) async {
   OpenAI.apiKey = Env.apiKey;
   // the system message that will be sent to the request.
   final systemMessage = OpenAIChatCompletionChoiceMessageModel(
@@ -339,6 +345,8 @@ Future<OpenAIChatCompletionModel> _apiExample(
       OpenAIChatCompletionChoiceMessageContentItemModel.text(
         "Krav til retten er dog at den skal være: ${requirements.join(',')}",
       ),
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(
+          "Den totale pris for retterne skal være $priceRangeString")
     ],
     role: OpenAIChatMessageRole.user,
   );
