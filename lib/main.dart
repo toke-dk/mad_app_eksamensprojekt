@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dart_openai/dart_openai.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mad_app_eksamensprojekt/models/recipe.dart';
@@ -205,41 +206,58 @@ class _MyHomePageState extends State<MyHomePage> {
                     onDismissed: (direction) =>
                         Provider.of<RecipesProvider>(context, listen: false)
                             .removeRecipe(indexRecipe),
-                    child: ListTile(
-                      leading: IconButton(
-                        icon: Icon(Icons.refresh),
-                        onPressed: () async {
-                          setState(() {
-                            isLoadingDishes = true;
-                          });
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
+                          leading: IconButton(
+                            icon: Icon(Icons.refresh),
+                            onPressed: () async {
+                              setState(() {
+                                isLoadingDishes = true;
+                              });
 
-                          final response = await _apiExample(
-                              requirements: generateRestrictions,
-                              amountOfDishes: 1);
+                              final response = await _apiExample(
+                                  requirements: generateRestrictions,
+                                  amountOfDishes: 1);
 
-                          setState(() {
-                            isLoadingDishes = false;
-                          });
+                              setState(() {
+                                isLoadingDishes = false;
+                              });
 
-                          final Recipe recipeToReplace = (response
-                                  .myJsonDecode["recipes"] as List<dynamic>)
-                              .map((e) => Recipe.fromMap(e))
-                              .first;
+                              final Recipe recipeToReplace = (response
+                                      .myJsonDecode["recipes"] as List<dynamic>)
+                                  .map((e) => Recipe.fromMap(e))
+                                  .first;
 
-                          Provider.of<RecipesProvider>(context, listen: false)
-                              .replaceRecipe(indexRecipe, recipeToReplace);
-                        },
-                      ),
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  RecipePage(recipe: indexRecipe))),
-                      title: Text(indexRecipe.name),
-                      trailing: Text(
-                          "${indexRecipe.getTotalPrice.roundToDouble()} .-"),
-                      subtitle: Text(
-                          "${indexRecipe.durationInMins} minutter, ${indexRecipe.ingredientsForRecipe.length} ingredienser"),
+                              Provider.of<RecipesProvider>(context,
+                                      listen: false)
+                                  .replaceRecipe(indexRecipe, recipeToReplace);
+                            },
+                          ),
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      RecipePage(recipe: indexRecipe))),
+                          title: Text("${indexRecipe.name}"),
+                          subtitle: Text(
+                              "${indexRecipe.durationInMins} minutter, ${indexRecipe.ingredientsForRecipe.length} ingredienser,  ${indexRecipe.getTotalPrice.roundToDouble()} .-"),
+                        ),
+                        Container(
+                            padding: const EdgeInsets.only(left: 20),
+                            height: 40,
+                            child: FittedBox(
+                              child: MyValueChanger(
+                                  handleValueChange: (int newVal) {
+                                    Provider.of<RecipesProvider>(context,
+                                            listen: false)
+                                        .changeRecipeAmounts(
+                                            indexRecipe, newVal);
+                                  },
+                                  value: indexRecipe.amounts),
+                            )),
+                      ],
                     ),
                   );
                 }),

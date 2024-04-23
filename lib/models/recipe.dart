@@ -6,6 +6,7 @@ class Recipe {
   int durationInMins;
   List<Ingredient> ingredientsForRecipe;
   List<String> instructions;
+  int amounts;
 
   Recipe({
     required this.name,
@@ -13,6 +14,7 @@ class Recipe {
     required this.durationInMins,
     required this.ingredientsForRecipe,
     required this.instructions,
+    required this.amounts
   });
 
   // To map: convert each field to a compatible map structure
@@ -24,6 +26,7 @@ class Recipe {
       'ingredientsForRecipe':
           ingredientsForRecipe.map((ingredient) => ingredient.toMap()).toList(),
       'instructions': instructions,
+      'amounts': amounts
     };
   }
 
@@ -39,7 +42,7 @@ class Recipe {
                   Ingredient.fromMap(ingredientMap as Map<String, dynamic>))
               .toList() ??
           [],
-      instructions: map['instructions']?.cast<String>() ?? [],
+      instructions: map['instructions']?.cast<String>() ?? [], amounts: (map['amounts'] as int?) ?? 1,
     );
   }
 

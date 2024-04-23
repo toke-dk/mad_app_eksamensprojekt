@@ -31,4 +31,11 @@ class RecipesProvider extends ChangeNotifier {
     _recipes[index] = newRecipe;
     notifyListeners();
   }
+
+  void changeRecipeAmounts(Recipe recipe, int amount) {
+    if (!_recipes.contains(recipe)) return;
+    int index = _recipes.indexOf(recipe);
+    _recipes[index].amounts += 1;
+    notifyListeners();
+  }
 }
