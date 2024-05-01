@@ -29,9 +29,9 @@ Widgets er byggestenene i brugergrænsefladen i Flutter. Dette projekt bruger en
 Hver side består af en widget
 
 Vigtige widgets brugt:
-* MyHomePage: Appens hovedskærm.
-* ShoppingList: Indkøbslisten til madplanen.
-* RecipePage: En oversigt over en specifik opskrift.
+* `MyHomePage`: Appens hovedskærm.
+* `ShoppingList`: Indkøbslisten til madplanen.
+* `RecipePage`: En oversigt over en specifik opskrift.
 
 ## Providers
 
@@ -56,7 +56,51 @@ Vi har brugt følgende API'er
 * Salling API
 
 ### OpenAI API
-I OpenAI's api bruger vi biblioteket [dart_openai: ^5.1.0](https://pub.dev/packages/dart_openai).
+I OpenAI's api bruger vi biblioteket [dart_openai](https://pub.dev/packages/dart_openai).
+
+Alt dette sker i
+```dart
+Future<OpenAIChatCompletionModel>_makeOpenAiDinnerPlan()
+```
+
+Vi starter med at give vores nøgle
+```dart
+OpenAI.apiKey = Env.apiKey
+```
+Derefter laver vi først en *assistant* besked ved hjælp af `OpenAIChatCompletionChoiceMessageModel` som skal have en *content*. 
+
+For at lave beskeden bruger vi `OpenAIChatCompletionChoiceMessageContentItemModel.text` og giver beskeden og husker at give argumentet `role: OpenAIChatMessageRole.assistant`. Til vores user besked bruger vi `role: OpenAIChatMessageRole.user`
+
+Vores json-format for responsen fortæller vi ChatGPT at den skal være
+```dart
+"recipes": [{
+            "name": TEXT,
+            "description": TEXT,
+            "durationInMins": INTEGER,
+            "ingredientsForRecipe": List<{"name": TEXT, "quantity": DOUBLE, "unit": STRING, "price": DOUBLE}>,
+            "instructions": List<TEXT>,
+            "energyInKcal": INTEGER,
+            "spices": List<String>,
+          }]
+```
+
+For at lave beskeden bruger vi `OpenAI.instance.chat.create` og giver argumentet til `model`
+```dart
+model: "gpt-3.5-turbo-0125",
+      responseFormat: {"type": "json_object"},
+      messages: requestMessages,
+      temperature: 1,
+```
+For at udskyde vores timeout fra 30 sekunder bruger vi OpenAI's `requestTimeOut` så vi kan lave anmodninger for mere end 30 sekunder.
+```dart
+OpenAI.requestsTimeOut = 60.seconds;
+```
+
+For at håndtere responsen laver vi funktionen
+```dart
+Future<void> handleOpenAiRequest()
+```
+Som omdanner `OpenAIChatCompletionModel` til vores `List<Recipe>` dart-format.
 
 ### Salling API
 For at bruge Sallings API 
