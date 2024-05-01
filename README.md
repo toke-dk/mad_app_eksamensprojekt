@@ -2,15 +2,78 @@
 
 En app der gør det nemt studerende at lave sunde retter. Dette er vores teknologi eksamensprojekt i 2.g
 
-## Getting Started
+# Struktur
 
-This project is a starting point for a Flutter application.
+Denne sektion beskriver struktur og nøglekomponenter i programmet
 
-A few resources to get you started if this is your first Flutter project:
+## Projektstruktur
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Projektet er organiseret i følgende mapper:
+  * lib
+    * env
+    * models
+    * pages
+    * providers
+    * shared
+      * widgets
+      * enums
+    * main.dart: Programmet starter her
+  * assets: Indeholder vores logo til appen
+  * pubspec.yaml: Definerer projektets afhængigheder og konfigurationer samt installerede biblioteker.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+> Bemærk: Private nøgler til OpenAI API og Salling API ligger i `/lib/env/env.g.dart` som er tilføjet til `.gitignore`.
+
+## Sider (Widgets)
+
+Widgets er byggestenene i brugergrænsefladen i Flutter. Dette projekt bruger en kombination af StatefulWidgets og StatelessWidgets til at oprette brugergrænsefladen.
+Hver side består af en widget
+
+Vigtige widgets brugt:
+* MyHomePage: Appens hovedskærm.
+* ShoppingList: Indkøbslisten til madplanen.
+* RecipePage: En oversigt over en specifik opskrift.
+
+## Providers
+
+Dette projekt bruger Provider state-management. Providers er en state-management metode der gør så man kan give forskellige informationer videre i appens widget-tree.
+
+Vi har to provider-klasser
+* `PersonalInfoProvider`: Bruges til den personlige information
+* `RecipesProvider`: Bruges til de forskellige opskrifter
+
+
+## Klasser(Models)
+
+Følgende klasser bruges i projektet:
+
+* `Ingredient`: til en ingrediens
+* `PersonalInfo`: til den personlige information man giver når den skal beregne næringsbehov
+* `Recipe`: til en opskrift
+
+## API'er
+Vi har brugt følgende API'er
+* OpenAI API
+* Salling API
+
+### OpenAI API
+I OpenAI's api bruger vi biblioteket [dart_openai: ^5.1.0](https://pub.dev/packages/dart_openai).
+
+### Salling API
+For at bruge Sallings API 
+
+## Biblioteker
+Bibiliotekerne er inde i pubspec.yaml
+Vi bruger følgende biblioteker
+* [cupertino_icons: ^1.0.6](https://pub.dev/packages/cupertino_icons)
+* [envied: ^0.5.4+1](https://pub.dev/packages/envied)
+* [flutter_animate: ^4.5.0](https://pub.dev/packages/flutter_animate)
+* [dart_openai: ^5.1.0](https://pub.dev/packages/dart_openai)
+* [provider: ^6.1.2](https://pub.dev/packages/provider)
+* [gap: ^3.0.1](https://pub.dev/packages/gap)
+* [syncfusion_flutter_sliders: ^25.1.40](https://pub.dev/packages/syncfusion_flutter_sliders)
+* [http: ^1.2.1](https://pub.dev/packages/http)
+* [html: ^0.15.4](https://pub.dev/packages/html)
+* [url_launcher: ^6.2.6](https://pub.dev/packages/url_launcher)
+* [package_info_plus: ^8.0.0](https://pub.dev/packages/package_info_plus)
+* [google_fonts: ^6.2.1](https://pub.dev/packages/google_fonts)
+* [flutter_launcher_icons: ^0.13.1](https://pub.dev/packages/flutter_launcher_icons)
