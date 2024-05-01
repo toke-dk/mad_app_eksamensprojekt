@@ -103,7 +103,30 @@ Future<void> handleOpenAiRequest()
 Som omdanner `OpenAIChatCompletionModel` til vores `List<Recipe>` dart-format.
 
 ### Salling API
-For at bruge Sallings API 
+For at bruge Sallings API skal vi bruge pakken [http](https://pub.dev/packages/http).
+
+Vi laver en funktion til at beregne bilkas pris
+```dart
+Future<Map<String, dynamic>?> _getBilkaPrice(
+    {required Ingredient ingredient, bool? tryWithoutUnits})
+```
+
+Vores url er `https://api.sallinggroup.com/v1-beta/product-suggestions/relevant-products?query=(Ingrediens)`
+Vore vi bruger headers: `{'Authorization': 'Bearer $token'}`
+
+Vi laver vores http anmodning med
+```dart
+response = await http.get(url, headers: headers);
+```
+Hvor vi får en masse forslag. Dem giver vi så videre til at den skal finde det forslag der er tættest på ingrediensen
+
+Få at finde den tætteste pris laver vi funktionen
+```dart
+Map<String, dynamic> _getClosestPrice(
+    List<dynamic> suggestions, Ingredient ingredient)
+```
+På den måde kan vi gå igennem alle ingredienser på indkøbslisten og derefter få de bilka-produkter som vi tror passer til de respektive produkter
+
 
 ## Biblioteker
 Bibiliotekerne er inde i pubspec.yaml
