@@ -21,7 +21,7 @@ Projektet er organiseret i følgende mapper:
   * assets: Indeholder vores logo til appen
   * pubspec.yaml: Definerer projektets afhængigheder og konfigurationer samt installerede biblioteker.
 
-> Bemærk: Private nøgler til OpenAI API og Salling API ligger i `/lib/env/env.g.dart` som er tilføjet til `.gitignore`.
+> Bemærk: Private nøgler til OpenAI API og Salling API ligger i `/lib/env/env.g.dart` som er tilføjet til `.gitignore` af sikkerhedsmessige årsager, hvilket betyder at de ikke ligger på github.
 
 ## Sider (Widgets)
 
@@ -84,12 +84,14 @@ Vores json-format for responsen fortæller vi ChatGPT at den skal være
           }]
 ```
 
-For at lave beskeden bruger vi `OpenAI.instance.chat.create` og giver argumentet til `model`
+For at lave beskeden bruger vi `OpenAI.instance.chat.create` og laver vores chatCompletion:
 ```dart
-model: "gpt-3.5-turbo-0125",
-      responseFormat: {"type": "json_object"},
-      messages: requestMessages,
-      temperature: 1,
+OpenAI.instance.chat.create(
+    model: "gpt-3.5-turbo-0125",
+    responseFormat: {"type": "json_object"},
+    messages: requestMessages,
+    temperature: 1,
+    seed: generateRandomNumber(1, 40));
 ```
 For at udskyde vores timeout fra 30 sekunder bruger vi OpenAI's `requestTimeOut` så vi kan lave anmodninger for mere end 30 sekunder.
 ```dart
