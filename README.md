@@ -52,11 +52,11 @@ Følgende klasser bruges i projektet:
 
 ## API'er
 Vi har brugt følgende API'er
-* OpenAI API
-* Salling API
+* [OpenAI API](https://platform.openai.com/docs/overview)
+* [Salling API](https://developer.sallinggroup.com/api-reference)
 
 ### OpenAI API
-I OpenAI's api bruger vi biblioteket [dart_openai](https://pub.dev/packages/dart_openai).
+I OpenAI's api bruger vi dart-biblioteket [dart_openai](https://pub.dev/packages/dart_openai).
 
 Alt dette sker i
 ```dart
@@ -103,7 +103,9 @@ Future<void> handleOpenAiRequest()
 Som omdanner `OpenAIChatCompletionModel` til vores `List<Recipe>` dart-format.
 
 ### Salling API
-For at bruge Sallings API skal vi bruge pakken [http](https://pub.dev/packages/http).
+Vi bruger den API fra salling der hedder *[Product Suggestions - Relevant Products](https://developer.sallinggroup.com/api-reference#relevant-products)* som får et produkt som input og giver en masse forslag til produkter fra Bilka ToGo retur.
+
+For at bruge Sallings API i dart skal vi bruge dart-pakken [http](https://pub.dev/packages/http).
 
 Vi laver en funktion til at beregne bilkas pris
 ```dart
