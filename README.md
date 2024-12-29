@@ -1,5 +1,3 @@
-# Mad-app (eksamensprojekt)
-
 En app der gør det nemt studerende at lave sunde retter. Dette er vores teknologi eksamensprojekt i 2.g
 
 # Struktur
@@ -131,7 +129,6 @@ Map<String, dynamic> _getClosestPrice(
 ```
 På den måde kan vi gå igennem alle ingredienser på indkøbslisten og derefter få de bilka-produkter som vi tror passer til de respektive produkter
 
-
 ## Biblioteker
 Bibiliotekerne er inde i pubspec.yaml
 Vi bruger følgende biblioteker
@@ -148,3 +145,10 @@ Vi bruger følgende biblioteker
 * [package_info_plus: ^8.0.0](https://pub.dev/packages/package_info_plus)
 * [google_fonts: ^6.2.1](https://pub.dev/packages/google_fonts)
 * [flutter_launcher_icons: ^0.13.1](https://pub.dev/packages/flutter_launcher_icons)
+
+## Billeder fra appen
+<img src="https://github.com/user-attachments/assets/b86fe095-2c9b-45a1-80fc-9070ee60aae1" width="200">
+<img src="https://github.com/user-attachments/assets/eb2aa98e-2a3e-455d-b49c-b01d36c9a76d" width="200">
+<img src="https://github.com/user-attachments/assets/b1f544e9-48a5-40e3-a68e-31c6b59afb8d" width="200">
+<img src="https://github.com/user-attachments/assets/cb9a7719-5e70-410d-9012-2b54bfcbf845" width="200">
+
